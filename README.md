@@ -24,5 +24,3 @@ La clase `Parking` es el núcleo de la aplicación. Gestiona el estado general d
 - Aparcar y desaparcar vehículos.
 - Consultar plazas disponibles.
 - Localizar vehículos por matrícula.
-
-http://localhost:63342/BASES%20DE%20DATOS/docGestionDeParking/GESTION_DE_PARKING/package-summary.html
