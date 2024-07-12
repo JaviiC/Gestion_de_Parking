@@ -43,15 +43,15 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
 
 ## Ejecución del Proyecto
 1. Clona el repositorio:
-````
+```bash
 git clone https://github.com/tu_usuario/gestion_parking.git
 ````
 2. Navega al directorio del proyecto:
-````
+```bash
 cd gestion_parking
 ````
 3. Compila y ejecuta la aplicación:
-````
+```bash
 javac -d bin src/GESTION_DE_PARKING/*.java
 java -cp bin GESTION_DE_PARKING.Parking
 ````
@@ -60,7 +60,7 @@ El sistema de gestión de parking ofrece una serie de métodos para interactuar 
 
 ## Ejemplo de Uso
 
-``````
+```java
 package GESTION_DE_PARKING;
 
 import java.sql.Connection;
