@@ -56,6 +56,18 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
     }
 
     /**
+     * Constructor para vehículos con matrícula y tipo de vehículo
+     *
+     * @param matricula Matrícula del vehículo.
+     * @param tipo Tipo de vehículo.
+     */
+    public Vehiculo(String matricula, TipoVehiculo tipo){
+        MATRICULA = matricula;
+        TIPO = tipo;
+        PAIS = GestionMatriculas.getPais(matricula);
+    }
+
+    /**
      * Constructor para vehículos con matrícula, tipo, y precio especificados.
      *
      * @param matricula Matrícula del vehículo.

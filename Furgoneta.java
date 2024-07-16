@@ -25,6 +25,17 @@ public class Furgoneta extends Vehiculo {
     }
 
     /**
+     * Constructor para crear una Furgoneta con la matrícula.
+     * Aplica un plus adicional al precio de estacionamiento de la Furgoneta.
+     *
+     * @param matricula
+     */
+    public Furgoneta(String matricula){
+        super(matricula, TipoVehiculo.Furgoneta);
+        plusDimension(PLUSDIMENSION);
+    }
+
+    /**
      * Constructor para crear una Furgoneta con la matrícula y precio de estacionamiento especificados.
      *
      * @param matricula La matrícula de la furgoneta.

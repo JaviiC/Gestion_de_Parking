@@ -18,6 +18,15 @@ public class Coche extends Vehiculo {
     }
 
     /**
+     * Constructor para crear un objeto Coche con la matrícula.
+     *
+     * @param matricula La matrícula del coche.
+     */
+    public Coche(String matricula) {
+        super(matricula, TipoVehiculo.Coche);
+    }
+
+    /**
      * Constructor para crear un objeto Coche con la matrícula y precio de estacionamiento especificados.
      *
      * @param matricula La matrícula del coche.

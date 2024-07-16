@@ -19,6 +19,16 @@ public class Moto extends Vehiculo {
     }
 
     /**
+     * Constructor para la clase Moto que especifica la matrícula.
+     * LLama al constructor super() de la clase padre con la matrícula y el Tipo de Vehiculo.
+     *
+     * @param matricula La matrícula de la moto.
+     */
+    public Moto(String matricula) {
+        super(matricula, TipoVehiculo.Moto);
+    }
+
+    /**
      * Constructor para la clase Moto que especifica la matrícula y el precio de estacionamiento.
      * Llama al constructor super() de la clase padre con la matrícula, el Tipo de Vehiculo y el precio de estacionamiento.
      *

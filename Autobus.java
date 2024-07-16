@@ -24,6 +24,16 @@ public class Autobus extends Vehiculo {
     }
 
     /**
+     * Constructor de Autobús que inicializa con la matrícula.
+     *
+     * @param matricula Matrícula del Autobús.
+     */
+    public Autobus(String matricula){
+        super(matricula, TipoVehiculo.Autobus);
+        plusDimension(PLUSDIMENSION);
+    }
+
+    /**
      * Constructor de Autobús que inicializa con la matrícula, tipo de vehículo y precio.
      *
      * @param matricula Matrícula del Autobús.
