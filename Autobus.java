@@ -40,6 +40,7 @@ public class Autobus extends Vehiculo {
      * @param precio Precio por minuto del Autobús.
      * @throws Exception Si la matrícula no es válida para el país especificado.
      */
+    //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Autobus(String matricula, double precio) throws Exception {
         super(matricula, TipoVehiculo.Autobus, precio);
     }

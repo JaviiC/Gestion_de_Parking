@@ -33,6 +33,7 @@ public class Coche extends Vehiculo {
      * @param precio    El precio de estacionamiento por minuto del coche.
      * @throws Exception Si ocurre un error durante la creación del objeto Coche.
      */
+    //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Coche(String matricula, double precio) throws Exception {
         super(matricula, TipoVehiculo.Coche, precio);
     }

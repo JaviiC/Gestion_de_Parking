@@ -54,6 +54,7 @@ public class VehiculoDAO {
         } else
             throw new RuntimeException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra registrado en la base de datos.");
 
+        System.out.println(created);
         return created;
     }
 

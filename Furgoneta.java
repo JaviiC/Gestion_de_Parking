@@ -42,6 +42,7 @@ public class Furgoneta extends Vehiculo {
      * @param precio    El precio de estacionamiento por minuto de la furgoneta.
      * @throws Exception Si ocurre un error durante la creación de la furgoneta.
      */
+    //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Furgoneta(String matricula, double precio) throws Exception {
         super(matricula, TipoVehiculo.Furgoneta, precio);
     }

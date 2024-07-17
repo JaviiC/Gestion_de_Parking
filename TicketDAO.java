@@ -56,7 +56,7 @@ public class TicketDAO {
 
         String sentencia = "DELETE FROM ticket WHERE id = ?";
 
-        if (validaHistorial(ticket.getID())) {
+        if (validaTicket(ticket.getID())) {
             try {
                 PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
                 miPrep.setInt(1, ticket.getID());
@@ -129,17 +129,17 @@ public class TicketDAO {
     /**
      * Valida si un ticket tiene un historial registrado en la base de datos.
      *
-     * @param idHistorial El ID del historial a validar.
+     * @param idTicket El ID del historial a validar.
      * @return true si el historial está registrado en la base de datos, false en caso contrario.
      */
-    public boolean validaHistorial(Integer idHistorial){
+    private boolean validaTicket(Integer idTicket){
 
-        String sentencia = "SELECT * FROM historial WHERE id = ?";
+        String sentencia = "SELECT * FROM ticket WHERE id = ?";
         boolean valido = false;
 
         try{
             PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
-            miPrep.setInt(1, idHistorial);
+            miPrep.setInt(1, idTicket);
 
             ResultSet miRes = miPrep.executeQuery();
 

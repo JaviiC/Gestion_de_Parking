@@ -36,6 +36,7 @@ public class Moto extends Vehiculo {
      * @param precio El precio de estacionamiento por minuto de la moto.
      * @throws Exception Si ocurre algún error durante la creación de la Moto.
      */
+    //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Moto(String matricula, double precio) throws Exception {
         super(matricula, TipoVehiculo.Moto, precio);
     }
