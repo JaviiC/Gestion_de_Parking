@@ -68,9 +68,12 @@ public class GestionMatriculas {
     /**
      * Obtiene el país al que pertenece la matrícula especificada.
      *
+     * Este método recorre un conjunto de patrones de matrículas asociados a diferentes países
+     * y devuelve el país correspondiente a la matrícula proporcionada.
+     *
      * @param matricula La matrícula cuyo país se desea obtener.
      * @return El país correspondiente a la matrícula.
-     * @throws Exception Si la matrícula no corresponde a ningún país registrado.
+     * @throws IllegalArgumentException Si la matrícula no corresponde a ningún país registrado.
      */
     public static Paises getPais(String matricula) { //He eliminado el throws Exception
         for (Map.Entry<Paises, String> entry : patronesPaisesMatricula.entrySet()) {
@@ -79,6 +82,22 @@ public class GestionMatriculas {
             }
         }
         throw new IllegalArgumentException("Matrícula " + matricula + " no válida para ningún país registrado.");
+    }
+    /**
+     * Estandariza una matrícula eliminando ciertos caracteres no alfanuméricos.
+     * <p>
+     * Este método toma una cadena de texto que representa una matrícula y elimina
+     * los guiones, espacios, puntos y comas, devolviendo una versión estandarizada
+     * de la misma.
+     * </p>
+     *
+     * @param matricula La cadena de texto que representa la matrícula a estandarizar.
+     * @return Una cadena de texto que contiene la matrícula estandarizada, sin guiones,
+     *         espacios, puntos ni comas.
+     * @throws NullPointerException si la matrícula proporcionada es nula.
+     */
+    public String estandarizarMatricula(String matricula){
+        return matricula.replaceAll("-| |.|,","");
     }
 
 }
