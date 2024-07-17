@@ -31,17 +31,6 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      */
     private double PRECIO_POR_MINUTO = 0.04;
 
-//    /**
-//     * Constructor para vehículos sin matrícula especificada.
-//     *
-//     * @param matricula Matrícula del vehículo.
-//     */
-//    public Vehiculo(String matricula){
-//        MATRICULA = matricula;
-//        TIPO = null;
-//        PAIS = null;
-//    }
-
     /**
      * Constructor para vehículos con tipo y país especificados.
      * Genera una matrícula aleatoria para el vehículo según el país.

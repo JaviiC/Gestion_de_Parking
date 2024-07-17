@@ -40,36 +40,36 @@ public class Parking {
     /**
      * Número total de plazas que contiene el parking.
      */
-    private final int NUMERO_DE_PLAZAS;
+    private final Integer NUMERO_DE_PLAZAS;
 
     /**
      * Listado de todas las plazas disponibles en el parking.
      */
-    private static ArrayList<Plaza> listadoPlazas = new ArrayList<>();
+    private final ArrayList<Plaza> listadoPlazas;
 
     /**
      * Listado de todos los vehículos registrados en el parking.
      */
-    private static ArrayList<Vehiculo> vehiculosRegistrados = new ArrayList<>();
+    private ArrayList<Vehiculo> vehiculosRegistrados;
 
     /**
      * Listado de todos los tickets históricos (entradas y salidas) registrados en el parking.
      */
-    private static ArrayList<Ticket> historicoTickets = new ArrayList<>();
-
+    private  ArrayList<Ticket> historicoTickets;
     /**
-     * Constructor de la clase Parking.
-     * Inicializa los DAOs y carga los datos desde la base de datos.
-     * Si no hay plazas en la base de datos, se crean las plazas iniciales.
+     * Constructor de la clase Parking. Inicializa los DAOs para interactuar con la base de datos,
+     * obtiene las listas de plazas, vehículos registrados y tickets históricos desde la base de datos,
+     * y crea las plazas iniciales si no existen en la base de datos.
      *
-     * @param conexion Conexion a la base de datos.
-     * @param NUMERO_DE_PLAZAS Número total de plazas que contendrá el parking.
+     * @param conexion la conexión a la base de datos.
+     * @param numero_plazas el número de plazas que debe tener el parking.
      */
-    public Parking(Connection conexion, int NUMERO_DE_PLAZAS){
+    public Parking (Connection conexion, int numero_plazas){
+        // Se crean los DAOs para interactuar con la base de datos
         vehiculoDAO = new VehiculoDAO(conexion);
         plazaDAO = new PlazaDAO(conexion);
         ticketDAO = new TicketDAO(conexion);
-        this.NUMERO_DE_PLAZAS = NUMERO_DE_PLAZAS;
+        NUMERO_DE_PLAZAS = numero_plazas;
 
         // Se obtienen todas las plazas, vehículos registrados y tickets históricos desde la base de datos
         listadoPlazas = plazaDAO.getAllPlaces();
@@ -83,7 +83,8 @@ public class Parking {
                 listadoPlazas.add(nueva); // Se añade la plaza a la lista de plazas del Parking
                 plazaDAO.creaPlaza(nueva); // Se crea la plaza en la base de datos
             }
-        }
+        } else
+            System.out.println("Ya se definió el tamaño del parking con respecto a la cantidad de plazas disponibles.");
     }
 
     /**
@@ -163,13 +164,20 @@ public class Parking {
     /**
      * Método para registrar la entrada de un vehículo al parking.
      *
+     * Este método intenta registrar un vehículo en la base de datos si no está ya registrado.
+     * Si el registro es exitoso, el vehículo se añade a la lista de vehículos registrados.
+     * Si el registro falla, se lanza una excepción.
+     *
      * @param vehiculo Vehículo que entra al parking y se desea registrar.
+     * @throws IllegalArgumentException Si el vehículo no se puede registrar en la base de datos.
      */
     public void entradaParking(Vehiculo vehiculo){
         // Se crea un nuevo vehículo y se registra en la base de datos (si no está ya registrado)
         boolean isCreated = vehiculoDAO.creaVehiculo(vehiculo);
         if (isCreated)
             vehiculosRegistrados.add(vehiculo);
+        else
+            throw new IllegalArgumentException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " no se ha registrado en la base de datos.");
     }
 
     /**
@@ -186,16 +194,22 @@ public class Parking {
     /**
      * Método para aparcar un vehículo en una plaza específica del parking.
      *
+     * Este método aparca un vehículo registrado en una plaza disponible del parking.
+     * Verifica que el número de plaza sea válido y que el vehículo esté registrado en el parking.
+     * Si la plaza está disponible, actualiza la plaza y crea un ticket sin fecha de salida.
+     *
      * @param numeroDePlaza Número de la plaza en la que se desea aparcar el vehículo.
      * @param vehiculo Vehículo que se desea aparcar en la plaza.
+     * @throws IllegalArgumentException Si el número de plaza no es válido o si el vehículo no está registrado en el parking.
      */
     public void aparcar(Integer numeroDePlaza, Vehiculo vehiculo){
 
+        //Si el nº de plaza es <= 0 o es mayor al máximo existente
         if (numeroDePlaza <= 0 || numeroDePlaza > NUMERO_DE_PLAZAS) {
             throw new IllegalArgumentException("El número de plaza " + numeroDePlaza + " no es válido." +
                     "\nEl parking actual consta de " + NUMERO_DE_PLAZAS + " plazas.");
         }
-
+        //Si el vehículo es nulo, o la lista que registra los vehículos no la contiene
         if (vehiculo == null || !vehiculosRegistrados.contains(vehiculo)) {
             throw new IllegalArgumentException("El vehículo proporcionado con matrícula " + vehiculo.getMATRICULA() + " no ha entrado en el parking.");
         }
@@ -225,7 +239,11 @@ public class Parking {
     /**
      * Método para desaparcar un vehículo de una plaza específica del parking.
      *
+     * Este método libera una plaza ocupada, actualiza el estado de la plaza y
+     * registra la fecha de salida del vehículo en el ticket correspondiente.
+     *
      * @param plaza Plaza de la que se desea desaparcar el vehículo.
+     * @throws RuntimeException Si no se encuentra un ticket asociado a la plaza.
      */
     public void desaparcar(Plaza plaza){
         // Si la plaza tiene asignado un vehículo, se procede a desaparcarlo
@@ -249,12 +267,30 @@ public class Parking {
             ticketDAO.actualizaTicket(ticket);
         }
     }
+    /**
+     * Busca un vehículo en la lista de vehículos registrados que tenga la matrícula especificada.
+     *
+     * @param matricula la matrícula del vehículo que se desea buscar.
+     * @return el objeto {@link Vehiculo} que tiene la matrícula especificada.
+     * @throws RuntimeException si no se encuentra ningún vehículo con la matrícula especificada.
+     */
+    public Vehiculo getVehiculoByMatricula(String matricula){
+        return vehiculosRegistrados.stream()
+                .filter(v -> v.getMATRICULA().equalsIgnoreCase(matricula))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se ha encontrado ningún vehículo con matrícula " + matricula));
+    }
 
     /**
      * Método para obtener una plaza específica del parking a partir de su número.
      *
+     * Este método busca en la lista de plazas del parking y devuelve el objeto Plaza
+     * correspondiente al número especificado. Si no se encuentra una plaza con el número dado,
+     * se lanza una excepción.
+     *
      * @param numeroDePlaza Número de la plaza que se desea obtener.
      * @return Objeto Plaza correspondiente al número especificado.
+     * @throws IllegalArgumentException Si no se encuentra una plaza con el número especificado.
      */
     public Plaza obtenerPlaza(int numeroDePlaza) {
         return listadoPlazas.stream()
@@ -264,7 +300,12 @@ public class Parking {
     }
 
     /**
-     * Método para mostrar información detallada sobre el estado actual del parking.
+     * Muestra el estado actual del parking en la consola.
+     *
+     * Este método imprime en la salida estándar información relevante sobre el estado del parking,
+     * incluyendo el número total de plazas, el número de plazas disponibles, la cantidad de vehículos
+     * registrados y el historial de tickets. Además, lista los detalles de cada plaza, vehículo y ticket
+     * registrado en el sistema.
      */
     public void showParkingStatus() {
         System.out.println("Estado actual del parking:");
@@ -285,4 +326,5 @@ public class Parking {
             System.out.println(ticket.toString());
         }
     }
+
 }

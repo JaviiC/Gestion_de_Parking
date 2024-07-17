@@ -17,7 +17,11 @@ public class GestionMatriculas {
     private static final Map<Paises, String> patronesPaisesMatricula = new HashMap<>();
 
     /**
-     * Inicialización estática del mapa con los patrones de matrículas por país.
+     * Inicializa el mapa de patrones de matrículas para diferentes países.
+     *
+     * Este bloque estático se ejecuta una sola vez cuando la clase es cargada y se utiliza
+     * para asociar cada país con su respectivo patrón de expresión regular. Los patrones
+     * se utilizan para validar matrículas según el formato específico de cada país.
      */
     static {
         patronesPaisesMatricula.put(Paises.Alemania, "^[0-9]{2} [0-9]{2} [A-HJ-NP-Z]{3}$"); // KA PA 777
@@ -82,22 +86,6 @@ public class GestionMatriculas {
             }
         }
         throw new IllegalArgumentException("Matrícula " + matricula + " no válida para ningún país registrado.");
-    }
-    /**
-     * Estandariza una matrícula eliminando ciertos caracteres no alfanuméricos.
-     * <p>
-     * Este método toma una cadena de texto que representa una matrícula y elimina
-     * los guiones, espacios, puntos y comas, devolviendo una versión estandarizada
-     * de la misma.
-     * </p>
-     *
-     * @param matricula La cadena de texto que representa la matrícula a estandarizar.
-     * @return Una cadena de texto que contiene la matrícula estandarizada, sin guiones,
-     *         espacios, puntos ni comas.
-     * @throws NullPointerException si la matrícula proporcionada es nula.
-     */
-    public String estandarizarMatricula(String matricula){
-        return matricula.replaceAll("-| |.|,","");
     }
 
 }

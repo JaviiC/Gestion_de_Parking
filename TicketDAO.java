@@ -26,6 +26,10 @@ public class TicketDAO {
     /**
      * Crea un nuevo ticket en la base de datos.
      *
+     * Este método inserta un nuevo registro de ticket en la base de datos utilizando
+     * los valores del objeto Ticket proporcionado.
+     * Se formatea la fecha de entrada de LocalDateTime a Timestamp para que sea compatible con la base de datos.
+     *
      * @param ticket El objeto Ticket a crear en la base de datos.
      */
     public void creaTicket(Ticket ticket){

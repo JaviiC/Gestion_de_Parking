@@ -28,8 +28,13 @@ public class VehiculoDAO {
     /**
      * Crea un registro de vehículo en la base de datos.
      *
+     * Este método inserta un nuevo registro de vehículo en la base de datos utilizando
+     * los valores del objeto Vehículo proporcionado. Si la matrícula del vehículo ya
+     * existe en la base de datos, no se creará el registro y se lanzará una excepción.
+     *
      * @param vehiculo Objeto de tipo Vehiculo que se desea crear en la base de datos.
      * @return true si se crea exitosamente, false si no se puede crear (matrícula ya existe).
+     * @throws RuntimeException Si la matrícula del vehículo ya existe en la base de datos.
      */
     public boolean creaVehiculo(Vehiculo vehiculo){
 
@@ -59,9 +64,14 @@ public class VehiculoDAO {
     }
 
     /**
-     * Elimina un registro de vehículo de la base de datos.
+     * Elimina un vehículo de la base de datos basado en su matrícula.
      *
-     * @param vehiculo Objeto de tipo Vehiculo que se desea eliminar de la base de datos.
+     * Este método busca el vehículo en la base de datos utilizando su matrícula y,
+     * si se encuentra, elimina el registro correspondiente. Si la matrícula no está
+     * registrada, se lanzará una excepción.
+     *
+     * @param vehiculo El objeto Vehiculo que se desea eliminar de la base de datos.
+     * @throws RuntimeException Si la matrícula del vehículo no está registrada en la base de datos.
      */
     public void eliminaVehiculo(Vehiculo vehiculo) {
 
@@ -82,9 +92,14 @@ public class VehiculoDAO {
     }
 
     /**
-     * Actualiza un registro de vehículo en la base de datos.
+     * Actualiza el precio de estacionamiento de un vehículo en la base de datos.
      *
-     * @param vehiculo Objeto de tipo Vehiculo que se desea actualizar en la base de datos.
+     * Este método modifica el registro de un vehículo existente, estableciendo un nuevo precio
+     * de estacionamiento para el vehículo identificado por su matrícula. Si la matrícula no se
+     * encuentra en la base de datos, se lanzará una excepción.
+     *
+     * @param vehiculo El objeto Vehiculo que contiene la matrícula y el nuevo precio de estacionamiento.
+     * @throws RuntimeException Si el vehículo con la matrícula especificada no está registrado en la base de datos.
      */
     public void actualizaVehiculo(Vehiculo vehiculo){
 
@@ -109,7 +124,12 @@ public class VehiculoDAO {
     /**
      * Recupera todos los vehículos registrados en la base de datos.
      *
-     * @return ArrayList de Vehiculo que contiene todos los vehículos registrados.
+     * Este método ejecuta una consulta para obtener todos los registros de vehículos
+     * almacenados en la tabla de vehículos y los devuelve como una lista de objetos
+     * de tipo Vehiculo. Cada tipo de vehículo se instancia según su clasificación.
+     *
+     * @return ArrayList de Vehiculo que contiene todos los vehículos registrados en la base de datos.
+     * @throws RuntimeException Si ocurre un error inesperado durante la ejecución de la consulta.
      */
     public ArrayList<Vehiculo> getAllVehicles() {
 
@@ -136,10 +156,15 @@ public class VehiculoDAO {
     }
 
     /**
-     * Valida si la matrícula de un vehículo está registrada en la base de datos.
+     * Verifica si una matrícula existe en la base de datos.
      *
-     * @param matricula Matrícula del vehículo a validar.
-     * @return true si la matrícula está registrada en la base de datos, false si no.
+     * Este método ejecuta una consulta para comprobar si la matrícula proporcionada
+     * está registrada en la tabla de vehículos. Retorna true si la matrícula existe,
+     * de lo contrario retorna false.
+     *
+     * @param matricula La matrícula que se desea verificar.
+     * @return true si la matrícula está registrada en la base de datos, false en caso contrario.
+     * @throws IllegalStateException Si ocurre un error al acceder a la base de datos.
      */
     public boolean encuentraMatricula(String matricula){
         String sentencia = "SELECT * FROM vehiculo WHERE matricula = ?";
@@ -154,16 +179,21 @@ public class VehiculoDAO {
                 valido = true;
 
         } catch (SQLException ex){
-            System.out.println(ex.getMessage());
+            throw new IllegalStateException("No se ha encontrado la matricula " + matricula + " en la base de datos");
         }
         return valido;
     }
 
     /**
-     * Recupera todos los vehículos registrados en la base de datos que pertenecen a un país específico.
+     * Recupera todos los vehículos registrados en la base de datos que son de un país específico.
      *
-     * @param pais País de los vehículos a recuperar.
-     * @return ArrayList de Vehiculo que contiene todos los vehículos registrados en el país especificado.
+     * Este método ejecuta una consulta en la base de datos para obtener todos los vehículos
+     * cuyo país coincide con el especificado y devuelve una lista que contiene las instancias
+     * correspondientes a cada tipo de vehículo.
+     *
+     * @param pais El país del cual se desean recuperar los vehículos.
+     * @return ArrayList de Vehiculo que contiene todos los vehículos registrados del país especificado.
+     * @throws RuntimeException Si ocurre un error inesperado durante la ejecución de la consulta.
      */
     public ArrayList<Vehiculo> getCountryGroup(Paises pais){
         ArrayList<Vehiculo> lista = new ArrayList<>();
@@ -183,7 +213,7 @@ public class VehiculoDAO {
             }
 
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Error al recuperar vehículos del país " + pais, e);
         }
         return lista;
     }
@@ -191,8 +221,13 @@ public class VehiculoDAO {
     /**
      * Recupera todos los vehículos registrados en la base de datos que son de un tipo específico.
      *
-     * @param tipoVehiculo Tipo de vehículos a recuperar.
+     * Este método ejecuta una consulta en la base de datos para obtener todos los vehículos
+     * del tipo especificado y devuelve una lista que contiene las instancias correspondientes
+     * a cada tipo de vehículo.
+     *
+     * @param tipoVehiculo Tipo de vehículos a recuperar (por ejemplo, Autobus, Coche, Furgoneta, Moto).
      * @return ArrayList de Vehiculo que contiene todos los vehículos registrados del tipo especificado.
+     * @throws RuntimeException Si ocurre un error inesperado durante la ejecución de la consulta.
      */
     public ArrayList<Vehiculo> getTypeGroup(TipoVehiculo tipoVehiculo){
         ArrayList<Vehiculo> lista = new ArrayList<>();
