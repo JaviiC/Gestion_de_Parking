@@ -162,6 +162,46 @@ public class Parking {
     }
 
     /**
+     * Crea un vehículo del tipo especificado con la matrícula proporcionada.
+     *
+     * @param matricula La matrícula del vehículo a crear.
+     * @param tipo El tipo de vehículo a crear.
+     * @return Un objeto de la clase Vehículo correspondiente al tipo especificado.
+     * @throws IllegalArgumentException Si el tipo de vehículo es desconocido.
+     */
+    public Vehiculo creaVehiculoSegunTipo(String matricula, TipoVehiculo tipo) {
+        Vehiculo vehiculo;
+        switch (tipo){
+            case Autobus -> vehiculo = new Autobus(matricula);
+            case Coche -> vehiculo = new Coche(matricula);
+            case Moto -> vehiculo = new Moto(matricula);
+            case Furgoneta -> vehiculo = new Furgoneta(matricula);
+            default -> throw new IllegalArgumentException("Tipo de vehículo desconocido");
+        }
+        return vehiculo;
+    }
+
+    /**
+     * Crea un vehículo del tipo especificado con el país proporcionado.
+     *
+     * @param pais El país asociado con el vehículo a crear.
+     * @param tipo El tipo de vehículo a crear.
+     * @return Un objeto de la clase Vehiculo correspondiente al tipo especificado.
+     * @throws IllegalArgumentException Si el tipo de vehículo es desconocido.
+     */
+    public Vehiculo creaVehiculoSegunPais(Paises pais, TipoVehiculo tipo) {
+        Vehiculo vehiculo;
+        switch (tipo){
+            case Autobus -> vehiculo = new Autobus(pais);
+            case Coche -> vehiculo = new Coche(pais);
+            case Moto -> vehiculo = new Moto(pais);
+            case Furgoneta -> vehiculo = new Furgoneta(pais);
+            default -> throw new IllegalArgumentException("Tipo de vehículo desconocido");
+        }
+        return vehiculo;
+    }
+
+    /**
      * Método para registrar la entrada de un vehículo al parking.
      *
      * Este método intenta registrar un vehículo en la base de datos si no está ya registrado.

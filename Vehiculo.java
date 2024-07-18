@@ -159,7 +159,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      */
     @Override
     public String toString() {
-        return TIPO + " con matrícula: " + MATRICULA + ". País: "+ PAIS + "-" + PRECIO_POR_MINUTO + "€/min. ";
+        return TIPO + " con matrícula " + MATRICULA + ". País: "+ PAIS + "-" + PRECIO_POR_MINUTO + "€/min. ";
     }
 
 }

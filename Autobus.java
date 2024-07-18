@@ -29,7 +29,7 @@ public class Autobus extends Vehiculo {
      * @param matricula Matrícula del Autobús.
      */
     public Autobus(String matricula){
-        super(matricula, TipoVehiculo.Autobus);
+        super(matricula.toUpperCase(), TipoVehiculo.Autobus);
         plusDimension(PLUSDIMENSION);
     }
 
@@ -42,7 +42,7 @@ public class Autobus extends Vehiculo {
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Autobus(String matricula, double precio) throws Exception {
-        super(matricula, TipoVehiculo.Autobus, precio);
+        super(matricula.toUpperCase(), TipoVehiculo.Autobus, precio);
     }
 
 }

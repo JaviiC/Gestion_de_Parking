@@ -23,7 +23,7 @@ public class Coche extends Vehiculo {
      * @param matricula La matrícula del coche.
      */
     public Coche(String matricula) {
-        super(matricula, TipoVehiculo.Coche);
+        super(matricula.toUpperCase(), TipoVehiculo.Coche);
     }
 
     /**
@@ -35,7 +35,7 @@ public class Coche extends Vehiculo {
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Coche(String matricula, double precio) throws Exception {
-        super(matricula, TipoVehiculo.Coche, precio);
+        super(matricula.toUpperCase(), TipoVehiculo.Coche, precio);
     }
 
 }

@@ -31,7 +31,7 @@ public class Furgoneta extends Vehiculo {
      * @param matricula
      */
     public Furgoneta(String matricula){
-        super(matricula, TipoVehiculo.Furgoneta);
+        super(matricula.toUpperCase(), TipoVehiculo.Furgoneta);
         plusDimension(PLUSDIMENSION);
     }
 
@@ -44,7 +44,7 @@ public class Furgoneta extends Vehiculo {
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
     public Furgoneta(String matricula, double precio) throws Exception {
-        super(matricula, TipoVehiculo.Furgoneta, precio);
+        super(matricula.toUpperCase(), TipoVehiculo.Furgoneta, precio);
     }
 
 }
