@@ -11,7 +11,7 @@ public enum Paises {
     Austria,
     Belgica,
     Bulgaria,
-    RepublicaCheca,
+    Republica_Checa,
     Eslovenia,
     Espana,
     Estonia,
@@ -20,7 +20,7 @@ public enum Paises {
     Italia,
     Luxemburgo,
     Malta,
-    PaisesBajos,
+    Paises_Bajos,
     Portugal,
     Rumania;
 

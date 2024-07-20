@@ -258,7 +258,7 @@ public class Parking {
         Plaza plaza = obtenerPlaza(numeroDePlaza);
 
         // Si la plaza está disponible, se actualizan los datos de la plaza y se genera un ticket sin fecha de salida
-        if (plaza.isDisponible()) {
+        if (plaza.isDisponible() && !estaAparcado(vehiculo)) {
             plaza.setDisponible(false);
             plaza.setMatriculaVehiculo(vehiculo.getMATRICULA());
 
@@ -270,9 +270,11 @@ public class Parking {
             historicoTickets.add(nuevo);
             ticketDAO.creaTicket(nuevo);
 
-            System.out.println("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ha aparcado en la plaza " + numeroDePlaza);
         } else {
-            System.out.println("Ha habido un error. El vehículo con matrícula " + vehiculo.getMATRICULA() + " no pudo aparcar en la plaza " + numeroDePlaza);
+            if (!plaza.isDisponible())
+                throw new IllegalStateException("La plaza " + plaza.getNUMERODEPLAZA() + " ya esta ocupada por el vehículo con matricula " + plaza.getMatriculaVehiculo());
+            else
+                throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra aparcado en la plaza " + getPlazaByVehiculo(vehiculo).getNUMERODEPLAZA());
         }
     }
 
@@ -307,6 +309,25 @@ public class Parking {
             ticketDAO.actualizaTicket(ticket);
         }
     }
+
+    /**
+     * Obtiene una lista de vehículos que están aparcados en las plazas.
+     *
+     * Recorre el listado de plazas y, para cada plaza que no esté disponible,
+     * añade el vehículo correspondiente a la lista de resultado.
+     *
+     * @return Una lista de objetos Vehiculo que están aparcados.
+     */
+    public ArrayList<Vehiculo> getVehiculosAparcados() {
+        ArrayList<Vehiculo> result = new ArrayList<>();
+
+        for(Plaza p : listadoPlazas){
+            if (!p.isDisponible())
+                result.add(getVehiculoByMatricula(p.getMatriculaVehiculo()));
+        }
+        return result;
+    }
+
     /**
      * Busca un vehículo en la lista de vehículos registrados que tenga la matrícula especificada.
      *
@@ -319,6 +340,36 @@ public class Parking {
                 .filter(v -> v.getMATRICULA().equalsIgnoreCase(matricula))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado ningún vehículo con matrícula " + matricula));
+    }
+
+    /**
+     * Verifica si un vehículo está aparcado en alguna plaza.
+     *
+     * @param vehiculo El vehículo que se desea verificar.
+     * @return {@code true} si el vehículo está aparcado, {@code false} en caso contrario.
+     */
+    private boolean estaAparcado(Vehiculo vehiculo){
+        Plaza plaza = getPlazaByVehiculo(vehiculo);
+        //Si no es nula, es que está aparcado
+        return plaza != null;
+    }
+
+    /**
+     * Obtiene la plaza de aparcamiento asociada a un vehículo dado.
+     *
+     * Este método recorre la lista de plazas de aparcamiento y busca la plaza
+     * que tiene un vehículo con la matrícula especificada. Si no se encuentra
+     * ninguna plaza asociada al vehículo, lanza una excepción.
+     *
+     * @param vehiculo El vehículo cuya plaza de aparcamiento se desea encontrar.
+     * @return La plaza de aparcamiento asociada al vehículo dado.
+     * @throws RuntimeException si no se encuentra ninguna plaza asociada al vehículo.
+     */
+    public Plaza getPlazaByVehiculo(Vehiculo vehiculo){
+        return listadoPlazas.stream()
+                .filter(p -> p.getMatriculaVehiculo() != null && p.getMatriculaVehiculo().equalsIgnoreCase(vehiculo.getMATRICULA()))
+                .findFirst()
+                .orElseThrow(null);
     }
 
     /**

@@ -125,7 +125,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      */
     @Override
     public int compareTo(Vehiculo b){
-        return this.getPAIS().compareTo(b.PAIS);
+        return this.getTIPO().compareTo(b.getTIPO());
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      */
     @Override
     public String toString() {
-        return TIPO + " con matrícula " + MATRICULA + ". País: "+ PAIS + "-" + PRECIO_POR_MINUTO + "€/min. ";
+        return TIPO + " con matrícula " + MATRICULA + ". Pais: "+ PAIS + ". Precio: " + PRECIO_POR_MINUTO + "€/min. ";
     }
 
 }

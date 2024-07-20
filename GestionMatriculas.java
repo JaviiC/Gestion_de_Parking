@@ -28,7 +28,7 @@ public class GestionMatriculas {
         patronesPaisesMatricula.put(Paises.Austria, "^[A-HJ-NP-Z]{1} [0-9]{3} [A-HJ-NP-Z]{2}$"); // K 510 BV
         patronesPaisesMatricula.put(Paises.Belgica, "^[0-9]{1}-[A-HJ-NP-Z]{3}-[0-9]{3}$"); // 1-ABC-003
         patronesPaisesMatricula.put(Paises.Bulgaria, "^[A-HJ-NP-Z]{2} [0-9]{4} [A-HJ-NP-Z]{2}$"); // CA 7845 XC
-        patronesPaisesMatricula.put(Paises.RepublicaCheca, "^[0-9]{1}[A-HJ-NP-Z]{1}[0-9]{1} [0-9]{4}$"); // 4A2 3000
+        patronesPaisesMatricula.put(Paises.Republica_Checa, "^[0-9]{1}[A-HJ-NP-Z]{1}[0-9]{1} [0-9]{4}$"); // 4A2 3000
         patronesPaisesMatricula.put(Paises.Eslovenia, "^[A-HJ-NP-Z]{2} [0-9]{2}-[0-9]{1}[A-HJ-NP-Z]{2}$"); // LJ 13-1JP
         patronesPaisesMatricula.put(Paises.Espana, "^[0-9]{4} [A-HJ-NP-Z]{3}$"); // 2008 HHR
         patronesPaisesMatricula.put(Paises.Estonia, "^[0-9]{3} [A-HJ-NP-Z]{3}$"); // 307 RTB
@@ -37,7 +37,7 @@ public class GestionMatriculas {
         patronesPaisesMatricula.put(Paises.Italia, "^[A-HJ-NP-Z]{2} [0-9]{3}[A-HJ-NP-Z]{2}$"); // CM 844CA
         patronesPaisesMatricula.put(Paises.Luxemburgo, "^[A-HJ-NP-Z]{2} [0-9]{3}$"); // HV 105
         patronesPaisesMatricula.put(Paises.Malta, "^[A-HJ-NP-Z]{3} [0-9]{3}$"); // ACF 110
-        patronesPaisesMatricula.put(Paises.PaisesBajos, "^[A-HJ-NP-Z]{2}-[A-HJ-NP-Z]{2}-[0-9]{2}$"); // PP-XF-69
+        patronesPaisesMatricula.put(Paises.Paises_Bajos, "^[A-HJ-NP-Z]{2}-[A-HJ-NP-Z]{2}-[0-9]{2}$"); // PP-XF-69
         patronesPaisesMatricula.put(Paises.Portugal, "^[0-9]{2}-[0-9]{2}-[A-HJ-NP-Z]{2}$"); // 45-72-XQ
         patronesPaisesMatricula.put(Paises.Rumania, "^[A-HJ-NP-Z]{2} [0-9]{2}[A-HJ-NP-Z]{3}$"); // AG 07PAS
     }
@@ -54,7 +54,7 @@ public class GestionMatriculas {
             case Austria -> Aleatorio.letra(1) + " " + Aleatorio.numero(3) + " " + Aleatorio.letra(2);
             case Belgica -> Aleatorio.numero(1) + "-" + Aleatorio.letra(3) + "-" + Aleatorio.numero(3);
             case Bulgaria -> Aleatorio.letra(2) + " " + Aleatorio.numero(4) + " " + Aleatorio.letra(2);
-            case RepublicaCheca -> Aleatorio.numero(1) + Aleatorio.letra(1) + Aleatorio.numero(1) + " " + Aleatorio.numero(4);
+            case Republica_Checa -> Aleatorio.numero(1) + Aleatorio.letra(1) + Aleatorio.numero(1) + " " + Aleatorio.numero(4);
             case Eslovenia -> Aleatorio.letra(2) + " " + Aleatorio.numero(2) + "-" + Aleatorio.numero(1) + Aleatorio.letra(2);
             case Espana -> Aleatorio.numero(4) + " " + Aleatorio.letra(3);
             case Estonia -> Aleatorio.numero(3) + " " + Aleatorio.letra(3);
@@ -63,7 +63,7 @@ public class GestionMatriculas {
             case Italia -> Aleatorio.letra(2) + " " + Aleatorio.numero(3) + Aleatorio.letra(2);
             case Luxemburgo -> Aleatorio.letra(2) + " " + Aleatorio.numero(3);
             case Malta -> Aleatorio.letra(3) + " " + Aleatorio.numero(3);
-            case PaisesBajos -> Aleatorio.letra(2) + "-" + Aleatorio.letra(2) + "-" + Aleatorio.numero(2);
+            case Paises_Bajos -> Aleatorio.letra(2) + "-" + Aleatorio.letra(2) + "-" + Aleatorio.numero(2);
             case Portugal -> Aleatorio.numero(2) + "-" + Aleatorio.numero(2) + "-" + Aleatorio.letra(2);
             case Rumania -> Aleatorio.letra(2) + " " + Aleatorio.numero(2) + Aleatorio.letra(3);
         };
