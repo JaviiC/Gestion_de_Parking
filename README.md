@@ -88,40 +88,19 @@ El sistema de gestión de parking ofrece una serie de métodos para interactuar 
 ## Ejemplo de Uso
 
 ```java
-package GESTION_DE_PARKING;
+package APP_GESTION_DE_PARKING;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import GESTION_DE_PARKING.*;
+import GESTION_DE_PARKING.GUI_AccesoBBDD;
+import GESTION_DE_PARKING.WindowManager;
 
 public class Main {
+
     public static void main(String[] args) {
-        try {
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_parking", "usuario", "contraseña");
-            Parking parking = new Parking(conexion, 100);
-            
-            // Registro de un vehículo
-            Vehiculo vehiculo = new Vehiculo("ABC-123");
-            parking.entradaParking(vehiculo);
-            // Aparcar el vehículo
-            parking.aparcar(1, vehiculo);
-            
-            // Mostrar estado del parking
-            parking.showParkingStatus();
-            
-            // Desaparcar el vehículo
-            Plaza plaza = parking.obtenerPlaza(1);
-            parking.desaparcar(plaza);
-            
-            // Registrar la salida del vehículo
-            parking.salidaParking(vehiculo);
-            
-            // Mostrar estado del parking
-            parking.showParkingStatus();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        // Crear el WindowManager
+        WindowManager manager = new WindowManager();
+        manager.addWindow("accesoBBDD", new GUI_AccesoBBDD(manager));
+
     }
 }
 ``````
