@@ -34,8 +34,8 @@ public class Coche extends Vehiculo {
      * @throws Exception Si ocurre un error durante la creación del objeto Coche.
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
-    public Coche(String matricula, double precio) throws Exception {
-        super(matricula.toUpperCase(), TipoVehiculo.Coche, precio, true);
+    public Coche(String matricula, double precio, boolean activo) throws Exception {
+        super(matricula.toUpperCase(), TipoVehiculo.Coche, precio, activo);
     }
 
 }

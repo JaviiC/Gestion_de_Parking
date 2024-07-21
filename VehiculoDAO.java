@@ -152,10 +152,10 @@ public class VehiculoDAO {
 
             while (miRes.next()){
                 switch (TipoVehiculo.valueOf(miRes.getString(2))) {
-                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4)));
-                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4)));
-                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4)));
-                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4)));
+                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
                 }
             }
 
@@ -215,10 +215,10 @@ public class VehiculoDAO {
 
             while(miRes.next()){
                 switch (TipoVehiculo.valueOf(miRes.getString("tipo"))) {
-                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4)));
-                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4)));
-                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4)));
-                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4)));
+                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
                 }
             }
 
@@ -250,16 +250,14 @@ public class VehiculoDAO {
 
             while (miRes.next()) {
                 switch (tipoVehiculo) {
-                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4)));
-                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4)));
-                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4)));
-                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4)));
+                    case Autobus -> lista.add(new Autobus(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Coche -> lista.add(new Coche(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Furgoneta -> lista.add(new Furgoneta(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
+                    case Moto -> lista.add(new Moto(miRes.getString(1), miRes.getDouble(4), miRes.getBoolean(5)));
                 }
             }
-        } catch (SQLException ex){
-            System.out.println(ex.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         return lista;
     }

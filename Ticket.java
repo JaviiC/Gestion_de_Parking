@@ -92,7 +92,7 @@ public class Ticket {
      *
      * @return La fecha y hora de salida prevista como {@link LocalDateTime}.
      */
-    public LocalDateTime getFECHA_SALIDA() {
+    public LocalDateTime getFechaSalida() {
         return fechaSalida;
     }
 

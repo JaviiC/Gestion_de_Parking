@@ -95,7 +95,7 @@ public class TicketDAO {
 
         try {
             PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
-            miPrep.setTimestamp(1, Timestamp.valueOf(ticket.getFECHA_SALIDA()));
+            miPrep.setTimestamp(1, Timestamp.valueOf(ticket.getFechaSalida()));
             miPrep.setInt(2, ticket.getID());
 
             miPrep.executeUpdate();

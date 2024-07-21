@@ -37,8 +37,8 @@ public class Moto extends Vehiculo {
      * @throws Exception Si ocurre algún error durante la creación de la Moto.
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
-    public Moto(String matricula, double precio) throws Exception {
-        super(matricula.toUpperCase(), TipoVehiculo.Moto, precio, true);
+    public Moto(String matricula, double precio, boolean activo) throws Exception {
+        super(matricula.toUpperCase(), TipoVehiculo.Moto, precio, activo);
     }
 
 }

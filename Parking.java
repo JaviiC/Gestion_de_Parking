@@ -236,8 +236,13 @@ public class Parking {
         // Para salir del parking, tiene que estar registrado y ACTIVO
         if (estaRegistrado(vehiculo)) {
             // Si no se encuentra dentro se actualiza su entrada y estado activo
-            if (!vehiculo.isActivo()) {
-                vehiculo.setActivo(true);
+            Plaza plaza = getPlazaByVehiculo(vehiculo);
+            //Si se encuentra dentro del parking...
+            if (vehiculo.isActivo()) {
+                //Si se encuentra aparcado, desaparca y sale
+                if (plaza != null)
+                    desaparcar(plaza);
+                vehiculo.setActivo(false);
                 vehiculoDAO.actualizaVehiculo(vehiculo);
             } else
                 throw new IllegalArgumentException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " no se encuentra dentro en el parking.");
@@ -272,7 +277,7 @@ public class Parking {
         Plaza plaza = obtenerPlaza(numeroDePlaza);
 
         // Si la plaza está disponible, se actualizan los datos de la plaza y se genera un ticket sin fecha de salida
-        if (plaza.isDisponible() && !estaAparcado(vehiculo)) {
+        if (plaza.isDisponible() && !estaAparcado(vehiculo) && vehiculo.isActivo()) {
             plaza.setDisponible(false);
             plaza.setMatriculaVehiculo(vehiculo.getMATRICULA());
 
@@ -281,14 +286,17 @@ public class Parking {
 
             // Se crea un nuevo Ticket sin fecha de salida
             Ticket nuevo = new Ticket(vehiculo.getMATRICULA(), plaza.getNUMERODEPLAZA(), LocalDateTime.now(), null);
-            historicoTickets.add(nuevo);
             ticketDAO.creaTicket(nuevo);
+            //Se recumera el último Ticket generado con la matrícula proporcionada, en este punto, se recupera con un ID != 0
+            historicoTickets.add(ticketDAO.getTicketByMatricula(vehiculo.getMATRICULA()));
 
         } else {
             if (!plaza.isDisponible())
                 throw new IllegalStateException("La plaza " + plaza.getNUMERODEPLAZA() + " ya está ocupada por el vehículo con matrícula " + plaza.getMatriculaVehiculo());
-            else
+            else if(estaAparcado(vehiculo))
                 throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra aparcado en la plaza " + getPlazaByVehiculo(vehiculo).getNUMERODEPLAZA());
+            else
+                throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " no se encuentra dentro del parking");
         }
     }
 
@@ -307,7 +315,17 @@ public class Parking {
             plaza.setDisponible(true);
 
             // Se recupera el ticket asociado a la plaza
-            Ticket ticket = ticketDAO.getTicketByMatricula(plaza.getMatriculaVehiculo());
+            int id_ticket = ticketDAO.getTicketByMatricula(plaza.getMatriculaVehiculo()).getID();
+            Ticket ticket = null;
+
+            //Bucle para encontrar el ticket del histórico de tickets
+            for(Ticket t : historicoTickets){
+                if (t.getID() == id_ticket) {
+                    ticket = t;
+                    break;
+                }
+            }
+
             plaza.setMatriculaVehiculo(null);
 
             // Se actualiza la plaza en la base de datos
@@ -339,9 +357,7 @@ public class Parking {
                 .filter(Vehiculo::isActivo)
                 .toList();
 
-        ArrayList<Vehiculo> result = new ArrayList<>(vehiculosActivos);
-
-        return result;
+        return new ArrayList<>(vehiculosActivos);
     }
 
     /**

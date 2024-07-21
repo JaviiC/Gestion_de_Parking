@@ -41,8 +41,8 @@ public class Autobus extends Vehiculo {
      * @throws Exception Si la matrícula no es válida para el país especificado.
      */
     //Este constructor es más para cuando recuperemos el vehículo de la base de datos
-    public Autobus(String matricula, double precio) throws Exception {
-        super(matricula.toUpperCase(), TipoVehiculo.Autobus, precio, true);
+    public Autobus(String matricula, double precio, boolean activo) throws Exception {
+        super(matricula.toUpperCase(), TipoVehiculo.Autobus, precio, activo);
     }
 
 }
