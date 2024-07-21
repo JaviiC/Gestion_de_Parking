@@ -4,12 +4,12 @@ import java.util.Objects;
 
 /**
  * Clase abstracta que representa un vehículo en el sistema de gestión de parking.
- * Esta clase implementa la interfaz Comparable para poder comparar vehículos por país.
+ * Esta clase implementa la interfaz {@link Comparable} para poder comparar vehículos por país.
  *
  * @version 1.0
  * @see VehiculoDAO
  */
-public abstract class Vehiculo implements Comparable<Vehiculo>{
+public abstract class Vehiculo implements Comparable<Vehiculo> {
 
     /**
      * Matrícula identificativa del Vehículo.
@@ -27,9 +27,14 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
     private final Paises PAIS;
 
     /**
+     * Indica si el vehículo está actualmente activo (se encuentra dentro del parking).
+     */
+    private boolean activo;
+
+    /**
      * Precio (€)/Minuto que se cobra al Vehículo durante su estacionamiento.
      */
-    private double PRECIO_POR_MINUTO = 0.04;
+    private double precioPorMinuto = 0.04;
 
     /**
      * Constructor para vehículos con tipo y país especificados.
@@ -42,33 +47,37 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
         MATRICULA = GestionMatriculas.nueva(pais);
         TIPO = tipo;
         PAIS = pais;
+        activo = true;
     }
 
     /**
-     * Constructor para vehículos con matrícula y tipo de vehículo
+     * Constructor para vehículos con matrícula y tipo de vehículo especificados.
      *
      * @param matricula Matrícula del vehículo.
      * @param tipo Tipo de vehículo.
      */
-    public Vehiculo(String matricula, TipoVehiculo tipo){
+    public Vehiculo(String matricula, TipoVehiculo tipo) {
         PAIS = GestionMatriculas.getPais(matricula);
         MATRICULA = matricula;
         TIPO = tipo;
+        activo = true;
     }
 
     /**
-     * Constructor para vehículos con matrícula, tipo, y precio especificados.
+     * Constructor para vehículos con matrícula, tipo, precio y estado especificados.
      *
      * @param matricula Matrícula del vehículo.
      * @param tipo Tipo de vehículo.
      * @param precio Precio por minuto de estacionamiento del vehículo.
+     * @param activo Indica si el vehículo está actualmente activo.
      * @throws Exception Si la matrícula no pertenece a ningún país registrado.
      */
-    public Vehiculo(String matricula, TipoVehiculo tipo, double precio) throws Exception{
+    public Vehiculo(String matricula, TipoVehiculo tipo, double precio, boolean activo) throws Exception {
         MATRICULA = matricula;
         TIPO = tipo;
         PAIS = GestionMatriculas.getPais(MATRICULA);
-        PRECIO_POR_MINUTO = precio;
+        precioPorMinuto = precio;
+        this.activo = activo;
     }
 
     /**
@@ -94,7 +103,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      *
      * @return País de la matrícula del vehículo.
      */
-    public Paises getPAIS(){
+    public Paises getPAIS() {
         return PAIS;
     }
 
@@ -103,20 +112,41 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      *
      * @return Precio por minuto de estacionamiento del vehículo.
      */
-    public double getPRECIO_POR_MINUTO() {
-        return PRECIO_POR_MINUTO;
+    public double getPrecioPorMinuto() {
+        return precioPorMinuto;
+    }
+
+    /**
+     * Verifica si el vehículo está actualmente activo (estacionado en el parking).
+     *
+     * @return {@code true} si el vehículo está activo, {@code false} en caso contrario.
+     */
+    public boolean isActivo() {
+        return activo;
+    }
+
+    /**
+     * Establece el estado de actividad del vehículo.
+     *
+     * @param activo {@code true} si el vehículo está activo (se encuentra en el parking), {@code false} en caso contrario.
+     */
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     /**
      * Añade un plus al precio por minuto del vehículo.
+     * <p>
+     * Este método incrementa el precio por minuto en la cantidad especificada por el parámetro {@code plus}.
+     * </p>
      *
-     * @param plus Monto adicional a añadir al precio por minuto.
+     * @param plusDimension Monto adicional a añadir al precio por minuto.
      */
-    protected void plusDimension(double plus){
-        PRECIO_POR_MINUTO += plus;
+    protected void plusDimension(double plusDimension) {
+        precioPorMinuto += plusDimension;
     }
 
-    /**
+/**
      * Compara este vehículo con otro según el país de su matrícula.
      *
      * @param b Vehículo con el que se compara.
@@ -159,7 +189,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo>{
      */
     @Override
     public String toString() {
-        return TIPO + " con matrícula " + MATRICULA + ". Pais: "+ PAIS + ". Precio: " + PRECIO_POR_MINUTO + "€/min. ";
+        return TIPO + " con matrícula " + MATRICULA + ". Pais: "+ PAIS + ". Precio: " + precioPorMinuto + "€/min. Activo: " + activo;
     }
 
 }

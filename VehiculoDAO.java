@@ -39,16 +39,18 @@ public class VehiculoDAO {
     public boolean creaVehiculo(Vehiculo vehiculo){
 
         boolean created = false;
+        //Si no encuentra la matrícula es que ya se encuentra registrado en la base de datos
         if (!encuentraMatricula(vehiculo.getMATRICULA())) {
 
-            String sentencia = "INSERT INTO vehiculo (matricula, tipo, pais, precioEstacionamiento) " +
-                    "VALUES (?, ?, ?, ?)";
+            String sentencia = "INSERT INTO vehiculo (matricula, tipo, pais, precioEstacionamiento, activo) " +
+                    "VALUES (?, ?, ?, ?, ?)";
             try {
                 PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
                 miPrep.setString(1, vehiculo.getMATRICULA());
                 miPrep.setString(2, vehiculo.getTIPO().toString());
                 miPrep.setString(3, vehiculo.getPAIS().toString());
-                miPrep.setDouble(4, vehiculo.getPRECIO_POR_MINUTO());
+                miPrep.setDouble(4, vehiculo.getPrecioPorMinuto());
+                miPrep.setBoolean(5, vehiculo.isActivo());
 
                 miPrep.executeUpdate();
                 created = true;
@@ -56,39 +58,47 @@ public class VehiculoDAO {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-        } else
-            throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra registrado en la base de datos.");
+
+        } //Se encuentra la matrícula en la base de datos
+        else {
+            //Si NO está activo, significa que está registrado en la base de datos, pero no se encuentra dentro.
+            if (!vehiculo.isActivo()){
+                vehiculo.setActivo(true);
+                actualizaVehiculo(vehiculo);
+            } else
+                throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra dentro del parking.");
+        }
 
         return created;
     }
 
-    /**
-     * Elimina un vehículo de la base de datos basado en su matrícula.
-     *
-     * Este método busca el vehículo en la base de datos utilizando su matrícula y,
-     * si se encuentra, elimina el registro correspondiente. Si la matrícula no está
-     * registrada, se lanzará una excepción.
-     *
-     * @param vehiculo El objeto Vehiculo que se desea eliminar de la base de datos.
-     * @throws RuntimeException Si la matrícula del vehículo no está registrada en la base de datos.
-     */
-    public void eliminaVehiculo(Vehiculo vehiculo) {
-
-        if (encuentraMatricula(vehiculo.getMATRICULA())) {
-
-            String sentencia = "DELETE FROM vehiculo WHERE matricula = ?";
-            try {
-                PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
-                miPrep.setString(1, vehiculo.getMATRICULA());
-
-                miPrep.executeUpdate();
-
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } else
-            throw new RuntimeException("La matrícula " + vehiculo.getMATRICULA() + " no se encuentra registrada en la base de datos");
-    }
+//    /**
+//     * Elimina un vehículo de la base de datos basado en su matrícula.
+//     *
+//     * Este método busca el vehículo en la base de datos utilizando su matrícula y,
+//     * si se encuentra, elimina el registro correspondiente. Si la matrícula no está
+//     * registrada, se lanzará una excepción.
+//     *
+//     * @param vehiculo El objeto Vehiculo que se desea eliminar de la base de datos.
+//     * @throws RuntimeException Si la matrícula del vehículo no está registrada en la base de datos.
+//     */
+//    public void eliminaVehiculo(Vehiculo vehiculo) {
+//
+//        if (encuentraMatricula(vehiculo.getMATRICULA())) {
+//
+//            String sentencia = "DELETE FROM vehiculo WHERE matricula = ?";
+//            try {
+//                PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
+//                miPrep.setString(1, vehiculo.getMATRICULA());
+//
+//                miPrep.executeUpdate();
+//
+//            } catch (SQLException ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//        } else
+//            throw new RuntimeException("La matrícula " + vehiculo.getMATRICULA() + " no se encuentra registrada en la base de datos");
+//    }
 
     /**
      * Actualiza el precio de estacionamiento de un vehículo en la base de datos.
@@ -102,14 +112,15 @@ public class VehiculoDAO {
      */
     public void actualizaVehiculo(Vehiculo vehiculo){
 
-        String sentencia = "UPDATE vehiculo SET precioEstacionamiento = ? WHERE matricula = ?";
+        String sentencia = "UPDATE vehiculo SET precioEstacionamiento = ?, activo = ? WHERE matricula = ?";
 
         if (encuentraMatricula(vehiculo.getMATRICULA())){
 
             try {
                 PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
-                miPrep.setDouble(1, vehiculo.getPRECIO_POR_MINUTO());
-                miPrep.setString(2, vehiculo.getMATRICULA());
+                miPrep.setDouble(1, vehiculo.getPrecioPorMinuto());
+                miPrep.setBoolean(2, vehiculo.isActivo());
+                miPrep.setString(3, vehiculo.getMATRICULA());
 
                 miPrep.executeUpdate();
 
@@ -149,7 +160,7 @@ public class VehiculoDAO {
             }
 
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         return lista;
     }
