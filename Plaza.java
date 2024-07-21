@@ -4,39 +4,51 @@ import java.util.Objects;
 
 /**
  * Clase que representa una plaza de aparcamiento en un sistema de gestión de parking.
- * Cada plaza tiene un número único, estado de disponibilidad y opcionalmente una matrícula de vehículo asociada.
+ * Cada plaza tiene un número único, un estado de disponibilidad y opcionalmente una matrícula de vehículo asociada.
  *
  * @version 1.0
  * @see PlazaDAO
  */
 public class Plaza {
 
+    /**
+     * Número único que identifica la plaza de aparcamiento.
+     */
     private final Integer NUMERODEPLAZA;
+
+    /**
+     * Indica si la plaza está disponible para ser utilizada.
+     */
     private boolean disponible;
+
+    /**
+     * Matrícula del vehículo asignado a la plaza.
+     * Puede ser {@code null} si la plaza está disponible.
+     */
     private String matriculaVehiculo;
 
     /**
      * Constructor que inicializa una plaza con todos los atributos.
      *
-     * @param NUMERODEPLAZA Número único de la plaza.
+     * @param NUMERODEPLAZA Número único de la plaza. No debe ser {@code null}.
      * @param disponible    Indica si la plaza está disponible para ser utilizada.
-     * @param matriculaVehiculo Matrícula del vehículo asignado a la plaza (puede ser null si la plaza está disponible).
+     * @param matriculaVehiculo Matrícula del vehículo asignado a la plaza. Puede ser {@code null} si la plaza está disponible.
+     * @throws NullPointerException Si {@code NUMERODEPLAZA} es {@code null}.
      */
     public Plaza(Integer NUMERODEPLAZA, boolean disponible, String matriculaVehiculo){
-        this.NUMERODEPLAZA = NUMERODEPLAZA;
+        this.NUMERODEPLAZA = Objects.requireNonNull(NUMERODEPLAZA, "El número de la plaza no puede ser null.");
         this.disponible = disponible;
         this.matriculaVehiculo = matriculaVehiculo;
     }
 
     /**
-     * Constructor que inicializa una plaza con el número único, con estado inicial disponible y sin matrícula asignada (null).
+     * Constructor que inicializa una plaza con el número único, estado inicial disponible y sin matrícula asignada.
      *
-     * @param NUMERODEPLAZA Número único de la plaza.
+     * @param NUMERODEPLAZA Número único de la plaza. No debe ser {@code null}.
+     * @throws NullPointerException Si {@code NUMERODEPLAZA} es {@code null}.
      */
     public Plaza(Integer NUMERODEPLAZA){
-        this.NUMERODEPLAZA = NUMERODEPLAZA;
-        disponible = true;
-        matriculaVehiculo = null;
+        this(NUMERODEPLAZA, true, null);
     }
 
     /**
@@ -51,7 +63,7 @@ public class Plaza {
     /**
      * Obtiene la matrícula del vehículo asignado a la plaza.
      *
-     * @return Matrícula del vehículo (puede ser null si la plaza está disponible).
+     * @return Matrícula del vehículo, o {@code null} si la plaza está disponible.
      */
     public String getMatriculaVehiculo(){
         return matriculaVehiculo;
@@ -60,7 +72,7 @@ public class Plaza {
     /**
      * Verifica si la plaza está disponible.
      *
-     * @return true si la plaza está disponible, false si está ocupada.
+     * @return {@code true} si la plaza está disponible, {@code false} si está ocupada.
      */
     public boolean isDisponible() {
         return disponible;
@@ -69,16 +81,16 @@ public class Plaza {
     /**
      * Establece el estado de disponibilidad de la plaza.
      *
-     * @param disponible true para la plaza disponible, y false para ocupada.
+     * @param disponible {@code true} para marcar la plaza como disponible, {@code false} para marcarla como ocupada.
      */
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
     /**
-     * Asigna la matrícula del vehículo a la plaza.
+     * Asigna una matrícula de vehículo a la plaza.
      *
-     * @param matriculaVehiculo Matrícula del vehículo a asignar.
+     * @param matriculaVehiculo Matrícula del vehículo a asignar. Puede ser {@code null} para indicar que la plaza está disponible.
      */
     public void setMatriculaVehiculo(String matriculaVehiculo){
         this.matriculaVehiculo = matriculaVehiculo;

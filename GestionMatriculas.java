@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Clase que gestiona la generación y validación de matrículas según el país.
+ * Esta clase proporciona métodos para crear matrículas aleatorias válidas para diferentes países
+ * y para determinar el país al que pertenece una matrícula dada.
  *
  * @version 1.0
  * @see Vehiculo
@@ -12,7 +14,9 @@ import java.util.Map;
 public class GestionMatriculas {
 
     /**
-     * Mapa que almacena los patrones de expresiones regulares para validar matrículas por país.
+     * Mapa que almacena los patrones de expresiones regulares para validar las matrículas por país.
+     * La clave es el país (de tipo {@link Paises}) y el valor es el patrón de expresión regular
+     * que define el formato de la matrícula para ese país.
      */
     private static final Map<Paises, String> patronesPaisesMatricula = new HashMap<>();
 
@@ -45,10 +49,14 @@ public class GestionMatriculas {
     /**
      * Genera una nueva matrícula aleatoria válida para el país especificado.
      *
-     * @param pais El país para el cual se desea generar la matrícula.
+     * @param pais El país para el cual se desea generar la matrícula. No debe ser {@code null}.
      * @return Una nueva matrícula válida para el país especificado.
+     * @throws IllegalArgumentException Si el país proporcionado es {@code null}.
      */
     public static String nueva(Paises pais) {
+        if (pais == null) {
+            throw new IllegalArgumentException("El país no puede ser null.");
+        }
         return switch (pais) {
             case Alemania -> Aleatorio.numero(2) + " " + Aleatorio.numero(2) + " " + Aleatorio.letra(3);
             case Austria -> Aleatorio.letra(1) + " " + Aleatorio.numero(3) + " " + Aleatorio.letra(2);
@@ -58,7 +66,7 @@ public class GestionMatriculas {
             case Eslovenia -> Aleatorio.letra(2) + " " + Aleatorio.numero(2) + "-" + Aleatorio.numero(1) + Aleatorio.letra(2);
             case Espana -> Aleatorio.numero(4) + " " + Aleatorio.letra(3);
             case Estonia -> Aleatorio.numero(3) + " " + Aleatorio.letra(3);
-            case Finlandia -> Aleatorio.letra(3) + "-" + Aleatorio.numero(3);
+            case Finlandia -> Aleatorio.numero(4) + "-" + Aleatorio.letra(3);
             case Francia -> Aleatorio.letra(2) + "-" + Aleatorio.numero(3) + "-" + Aleatorio.letra(2);
             case Italia -> Aleatorio.letra(2) + " " + Aleatorio.numero(3) + Aleatorio.letra(2);
             case Luxemburgo -> Aleatorio.letra(2) + " " + Aleatorio.numero(3);
@@ -75,11 +83,15 @@ public class GestionMatriculas {
      * Este método recorre un conjunto de patrones de matrículas asociados a diferentes países
      * y devuelve el país correspondiente a la matrícula proporcionada.
      *
-     * @param matricula La matrícula cuyo país se desea obtener.
+     * @param matricula La matrícula cuyo país se desea obtener. No debe ser {@code null}.
      * @return El país correspondiente a la matrícula.
      * @throws IllegalArgumentException Si la matrícula no corresponde a ningún país registrado.
+     * @throws NullPointerException Si la matrícula es {@code null}.
      */
-    public static Paises getPais(String matricula) { //He eliminado el throws Exception
+    public static Paises getPais(String matricula) {
+        if (matricula == null) {
+            throw new NullPointerException("La matrícula no puede ser null.");
+        }
         for (Map.Entry<Paises, String> entry : patronesPaisesMatricula.entrySet()) {
             if (matricula.matches(entry.getValue())) {
                 return entry.getKey();
