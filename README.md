@@ -38,8 +38,35 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
 
 1. Crea una base de datos en MySQL:
    ```sql
-   CREATE DATABASE gestion_parking;
-2. Ejecuta los scripts SQL proporcionados en el archivo database.sql para crear las tablas necesarias.
+   CREATE DATABASE parking CHARACTER SET utf8mb4 COLLATE utf8mb4_es_0900_as_cs;
+2. Desde la base de datos crea las tablas de Vehiculo, Plaza y Ticket:
+   ```sql
+   CREATE TABLE vehiculo (
+    matricula VARCHAR(15) NOT NULL UNIQUE,
+    tipo VARCHAR(20) NOT NULL,
+    pais VARCHAR(20) NOT NULL,
+    precioEstacionamiento DECIMAL(5,2) NOT NULL,
+    activo BOOLEAN NOT NULL,
+    PRIMARY KEY (matricula)
+   );
+
+   CREATE TABLE plaza (
+       numero SMALLINT UNSIGNED NOT NULL,
+       disponible BOOLEAN NOT NULL,
+       matriculaVehiculo VARCHAR(15),
+       PRIMARY KEY (numero),
+       FOREIGN KEY (matriculaVehiculo) REFERENCES vehiculo(matricula) ON UPDATE CASCADE
+   );
+
+   CREATE TABLE ticket (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       matricula VARCHAR(15) NOT NULL,
+       numeroPlaza SMALLINT UNSIGNED NOT NULL,
+       fechaEntrada TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       fechaSalida TIMESTAMP,
+       FOREIGN KEY (matricula) REFERENCES vehiculo(matricula) ON DELETE CASCADE,
+       FOREIGN KEY (numeroPlaza) REFERENCES plaza(numero) ON DELETE CASCADE
+   );
 
 ## Ejecución del Proyecto
 1. Clona el repositorio:
