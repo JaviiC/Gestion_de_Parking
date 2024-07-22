@@ -146,7 +146,23 @@ public abstract class Vehiculo implements Comparable<Vehiculo> {
         precioPorMinuto += plusDimension;
     }
 
-/**
+    /**
+     * Determina si el vehículo tiene dimensiones superiores a las de un coche o una moto.
+     *
+     * Este método utiliza una expresión {@code switch} para verificar el tipo del vehículo
+     * ({@code this.TIPO}). Devuelve {@code true} si el tipo es {@code Autobus} o {@code Furgoneta},
+     * y {@code false} si el tipo es {@code Coche} o {@code Moto}.
+     *
+     * @return {@code true} si el vehículo es un autobús o una furgoneta, {@code false} si es un coche o una moto.
+     */
+    public boolean tienePlusDimension(){
+        return switch (this.TIPO) {
+            case Coche, Moto -> false;
+            case Autobus, Furgoneta -> true;
+        };
+    }
+
+    /**
      * Compara este vehículo con otro según el país de su matrícula.
      *
      * @param b Vehículo con el que se compara.

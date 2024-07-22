@@ -48,6 +48,16 @@ public class Parking {
     private final ArrayList<Plaza> listadoPlazas;
 
     /**
+     * Precio máximo que se puede imponer a la estancia de un vehículo.
+     */
+    private final Double PRECIO_MAXIMO_ESTANCIA = 20.0;
+
+    /**
+     * Precio máximo que se puede imponer a la estancia de un vehículo grande (que tiene impuesto un plus de dimensión)
+     */
+    private final Double PRECIO_MAXIMO_ESTANCIA_PLUS = 45.5;
+
+    /**
      * Listado de todos los vehículos registrados en el parking.
      */
     private ArrayList<Vehiculo> vehiculosRegistrados;
@@ -202,23 +212,29 @@ public class Parking {
         return vehiculo;
     }
     /**
-     * Registra la entrada de un vehículo al parking.
-     * <p>
-     * Este método intenta registrar un vehículo en la base de datos si aún no está registrado.
-     * Si el registro es exitoso, el vehículo se añade a la lista de vehículos registrados.
-     * Si el registro falla, se lanza una excepción.
-     * </p>
+     * Gestiona la entrada de un vehículo al estacionamiento.
      *
-     * @param vehiculo El vehículo que entra al parking y se desea registrar.
-     * @throws IllegalArgumentException Si el vehículo no se puede registrar en la base de datos.
+     * Verifica si el estacionamiento está completo usando el método {@link #isComplete()}.
+     * Si está completo, intenta registrar el vehículo en la base de datos con
+     * {@code vehiculoDAO.creaVehiculo(vehiculo)}. Si el registro es exitoso,
+     * agrega el vehículo a la lista de vehículos registrados. Si el registro falla
+     * o el estacionamiento no está completo, lanza una excepción.
+     *
+     * @param vehiculo El vehículo que intenta entrar al estacionamiento.
+     * @throws IllegalArgumentException si el estacionamiento está completo o si el vehículo no se puede registrar.
      */
     public void entradaParking(Vehiculo vehiculo) {
-        // Se crea un nuevo vehículo y se registra en la base de datos (si no está ya registrado)
-        boolean isCreated = vehiculoDAO.creaVehiculo(vehiculo);
-        if (isCreated)
-            vehiculosRegistrados.add(vehiculo);
+        //Si está completo no permitira ninguna entrada
+        if (isComplete()) {
+            // Se crea un nuevo vehículo y se registra en la base de datos (si no está ya registrado)
+            boolean isCreated = vehiculoDAO.creaVehiculo(vehiculo);
+            if (isCreated)
+                vehiculosRegistrados.add(vehiculo);
+            else
+                throw new IllegalArgumentException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " no se ha registrado en la base de datos.");
+        }
         else
-            throw new IllegalArgumentException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " no se ha registrado en la base de datos.");
+            throw new IllegalArgumentException("PARKING COMPLETO");
     }
 
     /**
@@ -341,6 +357,10 @@ public class Parking {
             throw new IllegalStateException("La plaza " + plaza.getNUMERODEPLAZA() + " no tiene un vehículo aparcado.");
     }
 
+//    public Double calculaPrecioADoubleADouble(Ticket ticket) {
+//
+//    }
+
     /**
      * Obtiene una lista de vehículos que se encuentran actualmente dentro del parking.
      * <p>
@@ -401,6 +421,23 @@ public class Parking {
     }
 
     /**
+     * Obtiene la plaza de aparcamiento asociada a un vehículo dado.
+     * <p>
+     * Recorre la lista de plazas de aparcamiento y busca la plaza que tiene un vehículo con la matrícula especificada.
+     * Si no se encuentra ninguna plaza asociada al vehículo, devuelve {@code null}.
+     * </p>
+     *
+     * @param vehiculo El vehículo cuya plaza de aparcamiento se desea encontrar.
+     * @return La plaza de aparcamiento asociada al vehículo dado, o {@code null} si no se encuentra ninguna plaza.
+     */
+    public Plaza getPlazaByVehiculo(Vehiculo vehiculo) {
+        return listadoPlazas.stream()
+                .filter(p -> p.getMatriculaVehiculo() != null && p.getMatriculaVehiculo().equalsIgnoreCase(vehiculo.getMATRICULA()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
      * Verifica si el vehículo especificado está registrado en la lista de vehículos registrados.
      * <p>
      * Utiliza un stream para recorrer la colección de vehículos registrados y verifica si existe
@@ -431,23 +468,6 @@ public class Parking {
     }
 
     /**
-     * Obtiene la plaza de aparcamiento asociada a un vehículo dado.
-     * <p>
-     * Recorre la lista de plazas de aparcamiento y busca la plaza que tiene un vehículo con la matrícula especificada.
-     * Si no se encuentra ninguna plaza asociada al vehículo, devuelve {@code null}.
-     * </p>
-     *
-     * @param vehiculo El vehículo cuya plaza de aparcamiento se desea encontrar.
-     * @return La plaza de aparcamiento asociada al vehículo dado, o {@code null} si no se encuentra ninguna plaza.
-     */
-    public Plaza getPlazaByVehiculo(Vehiculo vehiculo) {
-        return listadoPlazas.stream()
-                .filter(p -> p.getMatriculaVehiculo() != null && p.getMatriculaVehiculo().equalsIgnoreCase(vehiculo.getMATRICULA()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    /**
      * Obtiene una plaza específica del parking a partir de su número.
      * <p>
      * Busca en la lista de plazas del parking y devuelve el objeto Plaza correspondiente al número especificado.
@@ -464,6 +484,19 @@ public class Parking {
         } catch (Exception e) {
             throw new IllegalArgumentException("No se encuentra una plaza con el número " + numeroDePlaza);
         }
+    }
+
+    /**
+     * Verifica si todos los espacios de estacionamiento (Plazas) en la lista están ocupados.
+     *
+     * Este método itera y verifica si alguna de las plazas está disponible.
+     *
+     * @return {@code true} si todos los espacios de estacionamiento están ocupados,
+     * {@code false} en caso contrario.
+     */
+    public boolean isComplete() {
+        return listadoPlazas.stream()
+                .noneMatch(Plaza::isDisponible);
     }
 
     /**

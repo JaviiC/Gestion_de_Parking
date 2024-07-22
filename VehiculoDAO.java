@@ -59,7 +59,7 @@ public class VehiculoDAO {
                 System.out.println(ex.getMessage());
             }
 
-        } //Se encuentra la matrícula en la base de datos
+        } //Se ENCUENTRA LA MATRÍCULA en la base de datos (está registrado)
         else {
             //Si NO está activo, significa que está registrado en la base de datos, pero no se encuentra dentro.
             if (!vehiculo.isActivo()){
