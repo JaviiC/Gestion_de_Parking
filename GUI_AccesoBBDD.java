@@ -8,25 +8,68 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Ventana de acceso para conectar con la base de datos y gestionar el parking.
+ * <p>
+ * Esta clase representa una interfaz gráfica de usuario (GUI) que permite a los usuarios introducir credenciales
+ * para conectarse a la base de datos. Una vez autenticados, se crea un objeto {@link Parking} y se abre la ventana de gestión del parking.
+ * </p>
+ */
 public class GUI_AccesoBBDD extends JFrame {
 
-    // Escribir la base de datos correspondiente
+    /**
+     * URL de la base de datos a la que se conecta.
+     */
     private final String URL = "jdbc:mysql://localhost:3333/parking";
-    // Cantidad de plazas para el parking. Una vez creado el objeto Parking, este número no afectará a dicho objeto:
+
+    /**
+     * Número total de plazas en el parking.
+     */
     private final Integer PLAZAS_TOTALES = 500;
 
+    /**
+     * Administrador de las ventanas de la aplicación.
+     */
     private final WindowManager windowManager;
 
+    /**
+     * Panel principal de la interfaz gráfica.
+     */
     private JPanel MainPanel;
+
+    /**
+     * Campo para introducir la contraseña de acceso.
+     */
     private JPasswordField PasswordAccess;
+
+    /**
+     * Campo para introducir el nombre de usuario.
+     */
     private JTextField UserAccess;
+
+    /**
+     * Botón para iniciar el proceso de acceso.
+     */
     private JButton AccessButton;
+
+    /**
+     * Barra de progreso para mostrar el estado de la conexión.
+     */
     private JProgressBar progressBar;
+
+    /**
+     * Objeto {@link Parking} que se crea al conectar con la base de datos.
+     */
     private Parking parking;
 
+    /**
+     * Constructor que inicializa la interfaz gráfica y configura los componentes.
+     *
+     * @param windowManager El {@link WindowManager} para gestionar la navegación entre diferentes vistas.
+     */
     public GUI_AccesoBBDD(WindowManager windowManager) {
         this.windowManager = windowManager;
-        // Crear la interfaz gráfica
+        // Configuración inicial de la ventana
         setTitle("Acceso a la BBDD: GESTIÓN DE PARKING");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -35,13 +78,14 @@ public class GUI_AccesoBBDD extends JFrame {
         setVisible(true);
 
         // Configurar la barra de progreso
-        progressBar.setIndeterminate(false); // Hacer que la barra sea determinista
-        progressBar.setValue(0); // Inicializar el valor de la barra de progreso
-        progressBar.setStringPainted(true); // Mostrar el texto de progreso
+        progressBar.setIndeterminate(false);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
         progressBar.setForeground(Color.GREEN);
         progressBar.setBackground(Color.LIGHT_GRAY);
-        progressBar.setVisible(false); // Inicialmente oculta
+        progressBar.setVisible(false);
 
+        // Configurar el botón de acceso
         AccessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,16 +94,28 @@ public class GUI_AccesoBBDD extends JFrame {
         });
     }
 
+    /**
+     * Obtiene el objeto {@link Parking} creado después de una conexión exitosa.
+     *
+     * @return El objeto {@link Parking}.
+     */
     public Parking getParking() {
         return parking;
     }
 
+    /**
+     * Maneja el proceso de autenticación del usuario y la conexión a la base de datos.
+     * <p>
+     * Muestra una barra de progreso mientras se intenta conectar a la base de datos. Si la conexión es exitosa,
+     * se crea un objeto {@link Parking} y se abre la ventana de gestión del parking. En caso de error, muestra un mensaje de error.
+     * </p>
+     */
     private void handleAccess() {
         // Mostrar la barra de progreso
         progressBar.setVisible(true);
-        progressBar.setValue(0); // Reiniciar el valor
+        progressBar.setValue(0);
 
-        // Crear un SwingWorker para manejar la conexión y la creación del objeto Parking
+        // Crear un {@link SwingWorker} para manejar la conexión y la creación del objeto Parking
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             @Override
             protected Void doInBackground() {
@@ -67,11 +123,10 @@ public class GUI_AccesoBBDD extends JFrame {
                 String password = new String(PasswordAccess.getPassword());
 
                 // Simular progreso de la carga
-                int steps = 100; // Número total de pasos para el progreso
+                int steps = 100;
                 for (int i = 0; i <= steps; i++) {
                     try {
-                        // Simular tarea en proceso
-                        Thread.sleep(30); // Tiempo para simular la tarea
+                        Thread.sleep(30);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -123,9 +178,16 @@ public class GUI_AccesoBBDD extends JFrame {
             }
         };
 
-        worker.execute(); // Ejecutar el SwingWorker
+        worker.execute(); // Ejecutar el {@link SwingWorker}
     }
 
+    /**
+     * Intenta autenticar al usuario con las credenciales proporcionadas.
+     *
+     * @param user El nombre de usuario.
+     * @param password La contraseña del usuario.
+     * @return {@code true} si la autenticación es exitosa, {@code false} en caso contrario.
+     */
     private boolean authenticateUser(String user, String password) {
         try (Connection connection = DriverManager.getConnection(URL, user, password)) {
             // Si la conexión es exitosa, devolver true
@@ -137,8 +199,14 @@ public class GUI_AccesoBBDD extends JFrame {
         }
     }
 
+    /**
+     * Método para crear componentes personalizados.
+     * <p>
+     * Este método se utiliza para inicializar componentes gráficos personalizados.
+     * Se puede dejar vacío si no se necesitan componentes personalizados.
+     * </p>
+     */
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
-
 }
