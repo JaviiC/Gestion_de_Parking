@@ -11,7 +11,7 @@ import java.util.List;
  *
  * La clase utiliza DAOs (Data Access Objects) para interactuar con la base de datos, asegurando la persistencia de los datos.
  *
- * @autor Javier del Cerro
+ * @author Javier del Cerro
  * @version 1.0
  * @see Vehiculo
  * @see Plaza
@@ -357,7 +357,7 @@ public class Parking {
             throw new IllegalStateException("La plaza " + plaza.getNUMERODEPLAZA() + " no tiene un vehículo aparcado.");
     }
 
-//    public Double calculaPrecioADoubleADouble(Ticket ticket) {
+//    public Double calculaPrecio(Ticket ticket) {
 //
 //    }
 

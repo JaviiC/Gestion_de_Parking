@@ -4,11 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
+
+/**
+ * {@code GUI_GestionParking} es la clase principal para la gestión del GUI del sistema de gestión de parking.
+ * Esta clase extiende de {@link JFrame} e incluye todos los componentes necesarios para desarrollar la interfaz gráfica.
+ */
 
 public class GUI_GestionParking extends JFrame {
 
@@ -44,6 +47,12 @@ public class GUI_GestionParking extends JFrame {
 
     private Parking parking;
 
+    /**
+     * Constructor para la clase {@code GUI_GestionParking}.
+     *
+     * @param windowManager instancia de {@link WindowManager} para manejar las ventanas.
+     * @param parking instancia de {@link Parking} para gestionar las operaciones de parking.
+     */
     public GUI_GestionParking(WindowManager windowManager, Parking parking) {
         this.windowManager = windowManager;
         this.parking = parking;
@@ -143,9 +152,23 @@ public class GUI_GestionParking extends JFrame {
     }
 //______________________________________________________________________________________________________________________
 
+    /**
+     * Registra un vehículo en el sistema utilizando su matrícula.
+     * <p>
+     * El método obtiene la matrícula del campo de texto {@code MatriculaDeRegistro} y el tipo de vehículo
+     * seleccionado en {@code ComboTipo1}. A continuación, intenta crear el vehículo según el tipo seleccionado
+     * y registrarlo en el sistema de aparcamiento utilizando
+     * {@link Parking#creaVehiculoSegunTipo(String, TipoVehiculo)} y {@link Parking#entradaParking(Vehiculo)}.
+     * </p>
+     * <p>
+     * Si no se selecciona un tipo de vehículo válido, muestra un mensaje de advertencia. Si el formato de
+     * la matrícula es incorrecto, muestra un mensaje de error. Si el vehículo se registra correctamente,
+     * muestra un mensaje de confirmación.
+     * </p>
+     */
     private void registrarVehiculoPorMatricula() {
         String matricula = MatriculaDeRegistro.getText();
-        Vehiculo vehiculo = null;
+        Vehiculo vehiculo;
         TipoVehiculo tipo = null;
 
         try{
@@ -156,7 +179,6 @@ public class GUI_GestionParking extends JFrame {
 
         try {
             vehiculo = parking.creaVehiculoSegunTipo(matricula, tipo);
-
             try{
                 parking.entradaParking(vehiculo);
                 JOptionPane.showMessageDialog(this, "Vehículo registrado: " + vehiculo);
@@ -168,10 +190,21 @@ public class GUI_GestionParking extends JFrame {
             JOptionPane.showMessageDialog(this, "Asegurate de introducir una matrícula con un formato específico");
         }
 
-
-
     }
 
+    /**
+     * Registra un vehículo en el sistema utilizando su país de origen.
+     * <p>
+     * El método obtiene el tipo de vehículo seleccionado en {@code ComboTipo2} y el país seleccionado en {@code ComboPais}.
+     * A continuación, intenta crear el vehículo según el país y el tipo seleccionado utilizando
+     * {@link Parking#creaVehiculoSegunPais(Paises, TipoVehiculo)} y registra el vehículo en el sistema de aparcamiento
+     * utilizando {@link Parking#entradaParking(Vehiculo)}.
+     * </p>
+     * <p>
+     * Si no se selecciona un tipo de vehículo o país válido, muestra un mensaje de advertencia.
+     * Si el vehículo se registra correctamente, muestra un mensaje de confirmación.
+     * </p>
+     */
     private void registrarVehiculoPorNacionalidad() {
         Paises pais = null;
         TipoVehiculo tipo = null;
@@ -197,6 +230,14 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, "Vehículo registrado: " + vehiculo);
     }
 
+    /**
+     * Muestra todos los vehículos registrados en el sistema en un cuadro de diálogo.
+     * <p>
+     * Este método obtiene todos los vehículos a través de {@link Parking#getVehiculoDAO()#getAllVehicles()}, los ordena y
+     * los muestra en un {@code JTextArea} dentro de un {@code JScrollPane}. El cuadro de diálogo se muestra utilizando
+     * {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int)}.
+     * </p>
+     */
     private void mostrarTodosLosVehiculos() {
         ArrayList<Vehiculo> listaVehiculos = parking.getVehiculoDAO().getAllVehicles();
         Collections.sort(listaVehiculos);
@@ -219,6 +260,17 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Lista de todos los vehículos", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Registra la salida de un vehículo del parking.
+     * <p>
+     * Este método obtiene la matrícula del vehículo a través de {@code matriculaSalida.getText()},
+     * busca el vehículo correspondiente utilizando {@link Parking#getVehiculoByMatricula(String)},
+     * y luego registra la salida del vehículo utilizando {@link Parking#salidaParking(Vehiculo)}.
+     * Si la operación es exitosa, se muestra un mensaje de confirmación utilizando
+     * {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object)}. En caso de error,
+     * se muestra un mensaje de error.
+     * </p>
+     */
     private void registrarSalidaVehiculo() {
         String matricula = matriculaSalida.getText();
         try {
@@ -230,6 +282,20 @@ public class GUI_GestionParking extends JFrame {
         }
     }
 
+    /**
+     * Registra el aparcamiento de un vehículo en una plaza específica.
+     * <p>
+     * Este método obtiene la matrícula del vehículo a través de {@code matriculaAparca.getText()},
+     * y el número de plaza a través de {@code plazaAparca.getText()}. Luego, intenta convertir el número
+     * de plaza a un entero. Si la conversión falla, muestra un mensaje de error utilizando
+     * {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object)} y termina la ejecución.
+     * Si la conversión es exitosa, busca el vehículo correspondiente utilizando {@link Parking#getVehiculoByMatricula(String)},
+     * y registra el aparcamiento del vehículo utilizando {@link Parking#aparcar(Integer, Vehiculo)}.
+     * Si la operación es exitosa, muestra un mensaje de confirmación utilizando
+     * {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object)}. En caso de error,
+     * muestra un mensaje de error.
+     * </p>
+     */
     private void registrarAparcamiento() {
         String matricula = matriculaAparca.getText();
         int numeroDePlaza;
@@ -250,6 +316,14 @@ public class GUI_GestionParking extends JFrame {
         }
     }
 
+    /**
+     * Muestra una lista de todos los vehículos activos en el parking.
+     * <p>
+     * Obtiene la lista de vehículos activos mediante {@link Parking#getVehiculosActivos()} y la convierte
+     * en una representación de texto. Esta lista se muestra en un {@code JTextArea} dentro de un {@code JScrollPane}
+     * para permitir el desplazamiento. La información se presenta en un cuadro de diálogo {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int)}.
+     * </p>
+     */
     private void mostrarVehiculosActivos() {
         ArrayList<Vehiculo> vehiculosActivos = parking.getVehiculosActivos();
 
@@ -272,6 +346,15 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Lista de vehículos activos", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Muestra una lista de todos los vehículos actualmente aparcados en el parking.
+     * <p>
+     * Obtiene la lista de vehículos aparcados mediante {@link Parking#getVehiculosAparcados()} y la convierte
+     * en una representación de texto que incluye la información de la plaza donde está aparcado cada vehículo.
+     * Esta lista se muestra en un {@code JTextArea} dentro de un {@code JScrollPane} para permitir el desplazamiento.
+     * La información se presenta en un cuadro de diálogo {@link JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int)}.
+     * </p>
+     */
     private void mostrarVehiculosAparcados() {
         ArrayList<Vehiculo> vehiculosAparcados = parking.getVehiculosAparcados();
 
@@ -297,6 +380,17 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Lista de vehículos aparcados", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Libera una plaza de aparcamiento en el parking.
+     * <p>
+     * Obtiene el número de la plaza a liberar desde un campo de texto. Si el número no es válido, se muestra un mensaje de error.
+     * Si el número es válido, se intenta liberar la plaza correspondiente. Se muestra un mensaje de confirmación si la operación
+     * es exitosa o un mensaje de error en caso contrario.
+     * </p>
+     *
+     * @see Parking#obtenerPlaza(int) Para obtener la plaza correspondiente al número.
+     * @see Parking#desaparcar(Plaza) Para liberar la plaza.
+     */
     private void desaparcarVehiculo() {
         int numeroDePlaza;
         try {
@@ -315,6 +409,17 @@ public class GUI_GestionParking extends JFrame {
         }
     }
 
+    /**
+     * Muestra una lista de vehículos registrados en el parking, filtrados por país.
+     * <p>
+     * Obtiene el país seleccionado desde un combo box. Si el país seleccionado es inválido, se muestra un mensaje de error.
+     * Si el país es válido, se obtienen todos los vehículos del país seleccionado, se ordenan y se presentan en un cuadro de diálogo.
+     * </p>
+     *
+     * @see Parking#getVehiculoDAO() Para acceder al DAO de vehículos.
+     * @see VehiculoDAO#getCountryGroup(Paises) Para obtener vehículos filtrados por país.
+     * @see Paises Para los valores válidos de países.
+     */
     private void mostrarVehiculosPorPais() {
         Paises pais;
 
@@ -342,6 +447,17 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Lista de vehículos por país", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Muestra una lista de vehículos registrados en el parking, filtrados por tipo de vehículo.
+     * <p>
+     * Obtiene el tipo de vehículo seleccionado desde un combo box. Si el tipo de vehículo seleccionado es inválido, se muestra un mensaje de error.
+     * Si el tipo es válido, se obtienen todos los vehículos del tipo seleccionado, se ordenan y se presentan en un cuadro de diálogo.
+     * </p>
+     *
+     * @see Parking#getVehiculoDAO() Para acceder al DAO de vehículos.
+     * @see VehiculoDAO#getTypeGroup(TipoVehiculo) Para obtener vehículos filtrados por tipo.
+     * @see TipoVehiculo Para los valores válidos de tipos de vehículos.
+     */
     private void mostrarVehiculosPorTipo() {
         TipoVehiculo tipoVehiculo;
 
@@ -369,6 +485,17 @@ public class GUI_GestionParking extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Lista de vehículos por tipo", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Muestra un historial de tickets en una nueva ventana.
+     * <p>
+     * Crea un {@code JFrame} que presenta una lista de tickets. Cada ticket se muestra en un panel con detalles como ID, matrícula, número de plaza, fecha de entrada y fecha de salida.
+     * Los tickets están organizados verticalmente en un {@code JPanel} y se pueden desplazar dentro de un {@code JScrollPane}.
+     * </p>
+     *
+     * @see Parking#getHistoricoTickets() Para obtener la lista de tickets históricos.
+     * @see Ticket Para la estructura de los tickets.
+     * @see JScrollPane Para permitir el desplazamiento de la lista de tickets.
+     */
     private void mostrarHistoricoTickets() {
         // Crear un JFrame para mostrar el histórico de tickets
         JFrame ventanaHistorico = new JFrame("Histórico de Tickets");
@@ -500,6 +627,17 @@ public class GUI_GestionParking extends JFrame {
         ventanaHistorico.setVisible(true);
     }
 
+    /**
+     * Muestra una ventana con la lista de aparcamientos disponibles y ocupados.
+     * <p>
+     * Crea un {@code JFrame} que presenta un panel con una disposición de plazas de aparcamiento. Cada plaza se muestra en un panel con un color verde si está disponible o rojo si está ocupada.
+     * Las plazas están organizadas en filas de 10 con espacio entre cada fila para simular el diseño del aparcamiento. La ventana incluye un {@code JScrollPane} para permitir el desplazamiento.
+     * </p>
+     *
+     * @see Parking#getPlazas() Para obtener la lista de todas las plazas.
+     * @see Plaza Para la estructura de las plazas de aparcamiento.
+     * @see Vehiculo Para obtener información sobre el vehículo en una plaza ocupada.
+     */
     private void mostrarAparcamientosDisponibles() {
         // Crear un JFrame para mostrar las plazas
         JFrame ventanaPlazas = new JFrame("Aparcamientos Disponibles");
@@ -595,8 +733,6 @@ public class GUI_GestionParking extends JFrame {
         ventanaPlazas.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza el JFrame para que ocupe toda la pantalla
         ventanaPlazas.setVisible(true);
     }
-
-
 
     private void createUIComponents() {
         // Código de creación de componentes personalizados (si es necesario)
