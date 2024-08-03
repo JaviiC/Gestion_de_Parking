@@ -12,12 +12,35 @@ import java.util.Objects;
  */
 public class Ticket {
 
+    /**
+     * El identificador único del ticket.
+     */
     private final Integer ID;
+
+    /**
+     * La matrícula del vehículo asociado con el ticket.
+     */
     private final String MATRICULA;
+
+    /**
+     * El número de la plaza de estacionamiento asociada con el ticket.
+     */
     private final Integer NUM_PLAZA;
+
+    /**
+     * La fecha y hora de entrada del vehículo.
+     */
     private final LocalDateTime FECHA_ENTRADA;
+
+    /**
+     * La fecha y hora de salida del vehículo.
+     */
     private LocalDateTime fechaSalida;
 
+    /**
+     * El precio total del estacionamiento. Comenzará en 1.0 por coste de entrada.
+     */
+    private Double precioTotal;
     /**
      * Constructor para un Ticket con todos los atributos especificados.
      *
@@ -26,13 +49,15 @@ public class Ticket {
      * @param NUM_PLAZA    El número de la plaza de estacionamiento asignada.
      * @param FECHA_ENTRADA La fecha y hora de entrada del vehículo al parking.
      * @param fechaSalida  La fecha y hora de salida prevista del vehículo del parking.
+     * @param precioTotal El precio total a abonar por la diferencia entre entrada-salida.
      */
-    public Ticket(Integer ID, String MATRICULA, Integer NUM_PLAZA, LocalDateTime FECHA_ENTRADA, LocalDateTime fechaSalida) {
+    public Ticket(Integer ID, String MATRICULA, Integer NUM_PLAZA, LocalDateTime FECHA_ENTRADA, LocalDateTime fechaSalida, Double precioTotal) {
         this.ID = ID;
         this.MATRICULA = MATRICULA;
         this.NUM_PLAZA = NUM_PLAZA;
         this.FECHA_ENTRADA = FECHA_ENTRADA;
         this.fechaSalida = fechaSalida;
+        this.precioTotal = precioTotal;
     }
 
     /**
@@ -97,6 +122,15 @@ public class Ticket {
     }
 
     /**
+     * Obtiene el precio total del ticket.
+     *
+     * @return El precio total.
+     */
+    public Double getPrecioTotal() {
+        return precioTotal;
+    }
+
+    /**
      * Establece la fecha y hora de salida del vehículo del parking.
      *
      * @param fechaSalida La fecha y hora de salida a establecer en formato {@link LocalDateTime}.
@@ -112,6 +146,15 @@ public class Ticket {
         } else {
             throw new RuntimeException("La fecha de salida no puede ser anterior a la fecha de entrada.");
         }
+    }
+
+    /**
+     * Establece el precio total del ticket.
+     *
+     * @param precioTotal El precio total a establecer.
+     */
+    public void setPrecioTotal(Double precioTotal) {
+        this.precioTotal = precioTotal;
     }
 
     /**

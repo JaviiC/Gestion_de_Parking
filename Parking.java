@@ -51,12 +51,12 @@ public class Parking {
     /**
      * Precio máximo que se puede imponer a la estancia de un vehículo.
      */
-    private final Double PRECIO_MAXIMO_ESTANCIA = 25.0;
+    private final Double PRECIO_MAXIMO_ESTANCIA = 25.00;
 
     /**
      * Precio máximo que se puede imponer a la estancia de un vehículo grande (que tiene impuesto un plus de dimensión)
      */
-    private final Double PRECIO_MAXIMO_ESTANCIA_PLUS = 50.5;
+    private final Double PRECIO_MAXIMO_ESTANCIA_PLUS = 50.50;
 
     /**
      * Listado de todos los vehículos registrados en el parking.
@@ -349,8 +349,10 @@ public class Parking {
             // Se actualiza la plaza en la base de datos
             plazaDAO.actualizaPlaza(plaza);
 
-            // Se actualiza la fecha de salida en el ticket correspondiente
+            //Se actualiza la fecha de salida en el ticket correspondiente
             ticket.setFechaSalida(LocalDateTime.now());
+            //Se actualiza el precio total del ticket calculando la diferencia entrada-sallida
+            ticket.setPrecioTotal(calculaPrecio(ticket));
 
             // Se actualiza el ticket en la base de datos para registrar la fecha de salida
             ticketDAO.actualizaTicket(ticket);
@@ -378,13 +380,16 @@ public class Parking {
         //Se transforma la diferencia entre fechas a minutos
         double minutosTranscurridos = duration.toMinutes();
 
-        //Se obtiene el vehiculo para saber si tiene un plus de dimensión o no
+        //Se obtiene el vehículo para saber si tiene un plus de dimensión o no
         Vehiculo vehiculo = getVehiculoByMatricula(ticket.getMATRICULA());
 
+        //Se multiplican los minutos totales por el precio/minuto de cada vehículo
+        double precioTotal = minutosTranscurridos*vehiculo.getPrecioPorMinuto();
+
         if (vehiculo.tienePlusDimension())
-            return Math.min(minutosTranscurridos, PRECIO_MAXIMO_ESTANCIA_PLUS);
+            return Math.min(precioTotal, PRECIO_MAXIMO_ESTANCIA_PLUS);
         else
-            return Math.min(minutosTranscurridos, PRECIO_MAXIMO_ESTANCIA);
+            return Math.min(precioTotal, PRECIO_MAXIMO_ESTANCIA);
     }
 
     /**

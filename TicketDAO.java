@@ -80,23 +80,20 @@ public class TicketDAO {
     }
 
     /**
-     * Actualiza la fecha de salida de un ticket en la base de datos.
-     * <p>
-     * Este método actualiza la fecha y hora de salida de un ticket existente en la base de datos.
-     * La fecha de salida se convierte de {@link LocalDateTime} a {@link Timestamp}
-     * para ser compatible con la base de datos.
-     * </p>
+     * Actualiza la información de un ticket en la base de datos.
+     * Este método actualiza la fecha de salida y el precio total del ticket identificado por su ID.
      *
-     * @param ticket El objeto {@link Ticket} con la nueva fecha de salida a actualizar en la base de datos.
-     * @throws RuntimeException Si ocurre un error al actualizar el ticket en la base de datos.
+     * @param ticket El ticket que contiene la información actualizada, incluyendo la nueva fecha de salida y el precio total.
+     * @throws RuntimeException Si ocurre un error durante la actualización del ticket en la base de datos.
      */
     public void actualizaTicket(Ticket ticket) {
-        String sentencia = "UPDATE ticket SET fechaSalida = ? WHERE id = ?";
+        String sentencia = "UPDATE ticket SET fechaSalida = ?, precioTotal = ? WHERE id = ?";
 
         try {
             PreparedStatement miPrep = CONEXION.prepareStatement(sentencia);
             miPrep.setTimestamp(1, Timestamp.valueOf(ticket.getFechaSalida()));
-            miPrep.setInt(2, ticket.getID());
+            miPrep.setDouble(2, ticket.getPrecioTotal());
+            miPrep.setInt(3, ticket.getID());
 
             miPrep.executeUpdate();
 
@@ -131,7 +128,8 @@ public class TicketDAO {
                         miRes.getString("matricula"),
                         miRes.getInt("numeroPlaza"),
                         miRes.getTimestamp("fechaEntrada").toLocalDateTime(),
-                        fechaSalida
+                        fechaSalida,
+                        miRes.getDouble("precioTotal")
                 );
                 tickets.add(ticket);
             }
@@ -177,7 +175,8 @@ public class TicketDAO {
                         miRes.getString("matricula"),
                         miRes.getInt("numeroPlaza"),
                         miRes.getTimestamp("fechaEntrada").toLocalDateTime(),
-                        fechaSalida
+                        fechaSalida,
+                        miRes.getDouble("precioTotal")
                 );
             }
 

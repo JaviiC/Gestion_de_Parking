@@ -23,7 +23,6 @@ public class GUI_GestionParking extends JFrame {
     private JComboBox ComboPais;
     private JButton BotonRegistroPorMatricula;
     private JButton BotonRegistroPorNacionalidad;
-    private JTextField matriculaEntrada;
     private JTextField matriculaSalida;
     private JPanel BusquedasPanel;
     private JButton botonRegistroSalida;
@@ -526,7 +525,7 @@ public class GUI_GestionParking extends JFrame {
         for (int row = 0; row < numTickets; row++) {
             // Crear un panel para el ticket de la fila actual
             JPanel panelTicket = new JPanel();
-            panelTicket.setLayout(new BoxLayout(panelTicket, BoxLayout.Y_AXIS));
+            panelTicket.setLayout(new BoxLayout(panelTicket, BoxLayout.Y_AXIS)); // Cambiar a BoxLayout vertical para mantener el tamaño del ticket
             panelTicket.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             panelTicket.setBackground(Color.WHITE);
             panelTicket.setPreferredSize(new Dimension(210, 315)); // Tamaño del ticket (ancho x alto)
@@ -550,6 +549,8 @@ public class GUI_GestionParking extends JFrame {
             separadorTitulo.setPreferredSize(new Dimension(360, 2)); // Ancho y grosor del separador
             panelInfo.add(separadorTitulo);
 
+            panelInfo.add(Box.createVerticalStrut(10)); // Espacio vertical debajo del separador de título
+
             // Añadir la información del ticket al panelInfo
             JLabel etiquetaMatricula = new JLabel("Matrícula:");
             etiquetaMatricula.setFont(new Font("Arial", Font.BOLD, 18)); // Tamaño de fuente para la etiqueta
@@ -571,35 +572,50 @@ public class GUI_GestionParking extends JFrame {
             valorNumPlaza.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelInfo.add(valorNumPlaza);
 
-            panelInfo.add(Box.createVerticalStrut(18)); // Espacio vertical
+            panelInfo.add(Box.createVerticalStrut(10)); // Espacio vertical antes de la siguiente línea horizontal
 
             // Línea divisoria entre la información de matrícula/plaza y las fechas
             JSeparator separadorFechas = new JSeparator();
             separadorFechas.setPreferredSize(new Dimension(360, 2)); // Ancho y grosor del separador
             panelInfo.add(separadorFechas);
 
-            panelInfo.add(Box.createVerticalStrut(18)); // Espacio vertical
+            panelInfo.add(Box.createVerticalStrut(15)); // Espacio vertical antes de la fecha de entrada
 
             // Añadir las fechas al panelInfo
             JLabel etiquetaInicio = new JLabel("Fecha Entrada:");
-            etiquetaInicio.setFont(new Font("Arial", Font.BOLD, 18)); // Tamaño de fuente para la etiqueta
+            etiquetaInicio.setFont(new Font("Arial", Font.BOLD, 17)); // Tamaño de fuente para la etiqueta
             etiquetaInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelInfo.add(etiquetaInicio);
 
             JLabel valorInicio = new JLabel(ticket.getFECHA_ENTRADA() != null ? ticket.getFECHA_ENTRADA().format(formatter) : "--/--/--   --:--:--");
-            valorInicio.setFont(new Font("Arial", Font.PLAIN, 16)); // Tamaño de fuente para el contenido
+            valorInicio.setFont(new Font("Arial", Font.PLAIN, 15)); // Tamaño de fuente reducido para el contenido
             valorInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelInfo.add(valorInicio);
 
             JLabel etiquetaSalida = new JLabel("Fecha Salida:");
-            etiquetaSalida.setFont(new Font("Arial", Font.BOLD, 18)); // Tamaño de fuente para la etiqueta
+            etiquetaSalida.setFont(new Font("Arial", Font.BOLD, 17)); // Tamaño de fuente para la etiqueta
             etiquetaSalida.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelInfo.add(etiquetaSalida);
 
             JLabel valorSalida = new JLabel(ticket.getFechaSalida() != null ? ticket.getFechaSalida().format(formatter) : "--/--/--   --:--:--");
-            valorSalida.setFont(new Font("Arial", Font.PLAIN, 16)); // Tamaño de fuente para el contenido
+            valorSalida.setFont(new Font("Arial", Font.PLAIN, 15)); // Tamaño de fuente reducido para el contenido
             valorSalida.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelInfo.add(valorSalida);
+
+            panelInfo.add(Box.createVerticalStrut(15)); // Espacio vertical antes del precio
+
+            // Línea divisoria adicional debajo de las fechas
+            JSeparator separadorPrecio = new JSeparator();
+            separadorPrecio.setPreferredSize(new Dimension(360, 2)); // Ancho y grosor del separador
+            panelInfo.add(separadorPrecio);
+
+            panelInfo.add(Box.createVerticalStrut(5)); // Espacio vertical antes del precio
+
+            // Mostrar el precio total del ticket
+            JLabel etiquetaPrecioTotal = new JLabel("Precio: " + (ticket.getPrecioTotal() > 0 ? String.format("%.2f", ticket.getPrecioTotal()) : "-.--") + " €");
+            etiquetaPrecioTotal.setFont(new Font("Arial", Font.PLAIN, 16)); // Tamaño de fuente para el precio, no en negrita
+            etiquetaPrecioTotal.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelInfo.add(etiquetaPrecioTotal);
 
             // Agregar el panelInfo al panelTicket
             panelTicket.add(panelInfo);
@@ -626,6 +642,9 @@ public class GUI_GestionParking extends JFrame {
         ventanaHistorico.setLocationRelativeTo(null); // Centrar el JFrame en la pantalla
         ventanaHistorico.setVisible(true);
     }
+
+
+
 
     /**
      * Muestra una ventana con la lista de aparcamientos disponibles y ocupados.
