@@ -26,19 +26,16 @@ public class VehiculoDAO {
     }
 
     /**
-     * Crea un registro de vehículo en la base de datos.
+     * Inserta un nuevo registro de vehículo en la base de datos.
+     * Si la matrícula del vehículo ya está registrada, lanza una excepción.
      *
-     * Este método inserta un nuevo registro de vehículo en la base de datos utilizando
-     * los valores del objeto Vehículo proporcionado. Si la matrícula del vehículo ya
-     * existe en la base de datos, no se creará el registro y se lanzará una excepción.
-     *
-     * @param vehiculo Objeto de tipo Vehiculo que se desea crear en la base de datos.
-     * @return true si se crea exitosamente, false si no se puede crear (matrícula ya existe).
-     * @throws RuntimeException Si la matrícula del vehículo ya existe en la base de datos.
+     * @param vehiculo El objeto {@link Vehiculo} que se desea registrar.
+     * @throws IllegalStateException Si el vehículo ya está registrado en la base de datos.
+     * El método verifica la matrícula del vehículo mediante {@code encuentraMatricula}. Si no está registrada,
+     * prepara y ejecuta una sentencia SQL para insertar los datos del vehículo. Captura y muestra los errores SQL.
      */
-    public boolean creaVehiculo(Vehiculo vehiculo){
+    public void creaVehiculo(Vehiculo vehiculo){
 
-        boolean created = false;
         //Si no encuentra la matrícula es que ya se encuentra registrado en la base de datos
         if (!encuentraMatricula(vehiculo.getMATRICULA())) {
 
@@ -53,23 +50,14 @@ public class VehiculoDAO {
                 miPrep.setBoolean(5, vehiculo.isActivo());
 
                 miPrep.executeUpdate();
-                created = true;
 
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-
-        } //Se ENCUENTRA LA MATRÍCULA en la base de datos (está registrado)
-        else {
-            //Si NO está activo, significa que está registrado en la base de datos, pero no se encuentra dentro.
-            if (!vehiculo.isActivo()){
-                vehiculo.setActivo(true);
-                actualizaVehiculo(vehiculo);
-            } else
-                throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra dentro del parking.");
         }
-
-        return created;
+        //Se encuentra registrado en la base de datos
+        else
+            throw new IllegalStateException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra registrado en la base de datos.");
     }
 
 //    /**
