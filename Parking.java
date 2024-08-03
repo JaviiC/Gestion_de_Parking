@@ -1,6 +1,7 @@
 package GESTION_DE_PARKING;
 
 import java.sql.Connection;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +51,12 @@ public class Parking {
     /**
      * Precio máximo que se puede imponer a la estancia de un vehículo.
      */
-    private final Double PRECIO_MAXIMO_ESTANCIA = 20.0;
+    private final Double PRECIO_MAXIMO_ESTANCIA = 25.0;
 
     /**
      * Precio máximo que se puede imponer a la estancia de un vehículo grande (que tiene impuesto un plus de dimensión)
      */
-    private final Double PRECIO_MAXIMO_ESTANCIA_PLUS = 45.5;
+    private final Double PRECIO_MAXIMO_ESTANCIA_PLUS = 50.5;
 
     /**
      * Listado de todos los vehículos registrados en el parking.
@@ -211,6 +212,7 @@ public class Parking {
         }
         return vehiculo;
     }
+
     /**
      * Gestiona la entrada de un vehículo al estacionamiento.
      *
@@ -225,7 +227,7 @@ public class Parking {
      */
     public void entradaParking(Vehiculo vehiculo) {
         //Si está completo no permitira ninguna entrada
-        if (isComplete()) {
+        if (!isComplete()) {
             // Se crea un nuevo vehículo y se registra en la base de datos (si no está ya registrado)
             boolean isCreated = vehiculoDAO.creaVehiculo(vehiculo);
             if (isCreated)
@@ -357,9 +359,33 @@ public class Parking {
             throw new IllegalStateException("La plaza " + plaza.getNUMERODEPLAZA() + " no tiene un vehículo aparcado.");
     }
 
-//    public Double calculaPrecio(Ticket ticket) {
-//
-//    }
+    /**
+     * Calcula el precio del estacionamiento basado en la duración de la estancia
+     * y las características del vehículo.
+     *
+     * @param ticket El ticket que contiene la información de la entrada y salida del vehículo.
+     * @return El precio calculado del estacionamiento.
+     *
+     * @throws NullPointerException Si el ticket o las fechas de entrada/salida son nulos.
+     * @throws IllegalArgumentException Si la fecha de entrada es posterior a la fecha de salida.
+     */
+    public Double calculaPrecio(Ticket ticket) {
+
+        //Se obtienen las fechas de entrada y salida para calcular su diferencia
+        LocalDateTime date1 = ticket.getFECHA_ENTRADA(), date2 = ticket.getFechaSalida();
+
+        Duration duration = Duration.between(date1, date2);
+        //Se transforma la diferencia entre fechas a minutos
+        double minutosTranscurridos = duration.toMinutes();
+
+        //Se obtiene el vehiculo para saber si tiene un plus de dimensión o no
+        Vehiculo vehiculo = getVehiculoByMatricula(ticket.getMATRICULA());
+
+        if (vehiculo.tienePlusDimension())
+            return Math.min(minutosTranscurridos, PRECIO_MAXIMO_ESTANCIA_PLUS);
+        else
+            return Math.min(minutosTranscurridos, PRECIO_MAXIMO_ESTANCIA);
+    }
 
     /**
      * Obtiene una lista de vehículos que se encuentran actualmente dentro del parking.

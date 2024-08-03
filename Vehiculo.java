@@ -34,7 +34,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo> {
     /**
      * Precio (€)/Minuto que se cobra al Vehículo durante su estacionamiento.
      */
-    private double precioPorMinuto = 0.04;
+    private double precioPorMinuto = 0.05;
 
     /**
      * Constructor para vehículos con tipo y país especificados.
@@ -147,11 +147,7 @@ public abstract class Vehiculo implements Comparable<Vehiculo> {
     }
 
     /**
-     * Determina si el vehículo tiene dimensiones superiores a las de un coche o una moto.
-     *
-     * Este método utiliza una expresión {@code switch} para verificar el tipo del vehículo
-     * ({@code this.TIPO}). Devuelve {@code true} si el tipo es {@code Autobus} o {@code Furgoneta},
-     * y {@code false} si el tipo es {@code Coche} o {@code Moto}.
+     * Determina si el vehículo tiene un plus de dimensión basado en su tipo.
      *
      * @return {@code true} si el vehículo es un autobús o una furgoneta, {@code false} si es un coche o una moto.
      */
