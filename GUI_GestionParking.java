@@ -643,9 +643,6 @@ public class GUI_GestionParking extends JFrame {
         ventanaHistorico.setVisible(true);
     }
 
-
-
-
     /**
      * Muestra una ventana con la lista de aparcamientos disponibles y ocupados.
      * <p>
@@ -670,13 +667,20 @@ public class GUI_GestionParking extends JFrame {
         // Crear un panel principal con un GridBagLayout para simular la estructura del parking
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new GridBagLayout());
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100)); // Margen de 100 píxeles en los laterales
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Obtener las plazas desde el parking
         ArrayList<Plaza> plazas = parking.getPlazas(); // Suponiendo que el método getPlazas() devuelve todas las plazas
 
         int numRows = (int) Math.ceil(plazas.size() / 10.0); // Calcula el número total de filas
-        int carrilHeight = 240; // Altura fija para cada carril
+
+        // Crear un espacio antes de la primera fila
+        JPanel espacioInicial = new JPanel();
+        espacioInicial.setPreferredSize(new Dimension(pantallaSize.width - 200, 80)); // Ajustar el tamaño restando los márgenes laterales
+        gbc.gridx = 0;
+        gbc.gridy = 0; // La primera fila (espacio)
+        panelPrincipal.add(espacioInicial, gbc);
 
         // Crear filas de plazas en el panel principal
         for (int row = 0; row < numRows; row++) {
@@ -684,7 +688,7 @@ public class GUI_GestionParking extends JFrame {
             JPanel panelFila = new JPanel();
             panelFila.setLayout(new GridLayout(1, 10, 5, 5)); // 1 fila, 10 columnas
             panelFila.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            panelFila.setPreferredSize(new Dimension(pantallaSize.width, 120)); // Altura fija para cada fila
+            panelFila.setPreferredSize(new Dimension(pantallaSize.width - 200, 215)); // Ajustar el tamaño restando los márgenes laterales
 
             for (int col = 0; col < 10; col++) {
                 int index = row * 10 + col;
@@ -724,16 +728,16 @@ public class GUI_GestionParking extends JFrame {
 
             // Agregar el panel de la fila al panel principal
             gbc.gridx = 0;
-            gbc.gridy = row * 2; // Multiplica por 2 para dejar espacio para el carril
+            gbc.gridy = row * 2 + 1; // Ajustar la posición para el espacio inicial
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panelPrincipal.add(panelFila, gbc);
 
             // Agregar un espacio (carril) después de cada dos filas
             if (row % 2 == 1) {
                 JPanel panelCarril = new JPanel();
-                panelCarril.setPreferredSize(new Dimension(pantallaSize.width, 20)); // Altura del carril (espacio)
+                panelCarril.setPreferredSize(new Dimension(pantallaSize.width - 200, 80)); // Ajustar el tamaño restando los márgenes laterales
                 gbc.gridx = 0;
-                gbc.gridy = row * 2 + 1; // Multiplica por 2 y añade 1 para la fila del carril
+                gbc.gridy = row * 2 + 2; // Ajustar la posición para el espacio inicial
                 panelPrincipal.add(panelCarril, gbc);
             }
         }
