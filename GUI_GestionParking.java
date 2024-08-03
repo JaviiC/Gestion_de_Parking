@@ -39,7 +39,6 @@ public class GUI_GestionParking extends JFrame {
     private JComboBox comboAvanzadoTipo;
     private JButton botonAvanzadoTipo;
     private JButton botonHistoricoDeTickets;
-    private JButton botonTicketsHoy;
     private JComboBox comboBox1;
     private JButton botonMostrarVehiculosActivos;
     private WindowManager windowManager;

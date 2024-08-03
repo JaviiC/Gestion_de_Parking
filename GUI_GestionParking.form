@@ -409,7 +409,7 @@
               </grid>
             </constraints>
           </hspacer>
-          <grid id="83aeb" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="83aeb" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
@@ -419,18 +419,10 @@
             <children>
               <component id="5dc08" class="javax.swing.JButton" binding="botonHistoricoDeTickets">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Mostrar Histórico de Tickets"/>
-                </properties>
-              </component>
-              <component id="6dd11" class="javax.swing.JButton" binding="botonTicketsHoy">
-                <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Mostrar Tickets de Hoy"/>
+                  <text value="Mostrar Histórico de Tickets"/>
                 </properties>
               </component>
             </children>
@@ -469,21 +461,21 @@
               <model>
                 <item value="EJEMPLOS DE PLANTILLA"/>
                 <item value=""/>
-                <item value="Alemania:  &#9;KA PA 777"/>
-                <item value="Austria: &#9;K 510 BV"/>
-                <item value="Bélgica: &#9;1-ABC-003"/>
-                <item value="Bulgaria: &#9;CA 7845 XC"/>
-                <item value="República: &#9;Checa 4A2 3000"/>
-                <item value="Eslovenia: &#9;LF 13-1JP"/>
-                <item value="España: &#9;2008 HHR"/>
-                <item value="Estonia: &#9;307 RTB"/>
-                <item value="Finlandia: &#9;MMG-418"/>
-                <item value="Francia: &#9;AA-229-CF"/>
-                <item value="Italia: &#9;CM 844CA"/>
-                <item value="Luxemburgo: &#9;HV 105"/>
-                <item value="Paises Bajos: &#9;PP-XF-69"/>
-                <item value="Portugal: &#9;45-72-DL"/>
-                <item value="Rumanía: &#9;AG 07PAS"/>
+                <item value="Alemania:   KA PA 777"/>
+                <item value="Austria:   K 510 BV"/>
+                <item value="Bélgica:   1-ABC-003"/>
+                <item value="Bulgaria:   CA 7845 XC"/>
+                <item value="República Checa:   4A2 3000"/>
+                <item value="Eslovenia:   LF 13-1JP"/>
+                <item value="España:   2008 HHR"/>
+                <item value="Estonia:   307 RTB"/>
+                <item value="Finlandia:   MMG-418"/>
+                <item value="Francia:   AA-229-CF"/>
+                <item value="Italia:   CM 844CA"/>
+                <item value="Luxemburgo:   HV 105"/>
+                <item value="Paises Bajos:   PP-XF-69"/>
+                <item value="Portugal:   45-72-DL"/>
+                <item value="Rumanía:   AG 07PAS"/>
               </model>
             </properties>
           </component>
