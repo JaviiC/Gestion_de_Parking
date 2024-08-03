@@ -11,7 +11,7 @@ public class Autobus extends Vehiculo {
     /**
      * Plus del precio extra que se aplicará al Precio(€)/Minuto del Vehículo.
      */
-    private final double PLUSDIMENSION = 0.25;
+    private final double PLUSDIMENSION = 0.15;
 
     /**
      * Constructor de Autobús que inicializa con el tipo de vehículo y aplica el plus de dimensión.

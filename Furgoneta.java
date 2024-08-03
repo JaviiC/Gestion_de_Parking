@@ -11,7 +11,7 @@ public class Furgoneta extends Vehiculo {
     /**
      * Plus del precio extra que se aplica al Precio(€)/Minuto de la Furgoneta.
      */
-    private final double PLUSDIMENSION = 0.20;
+    private final double PLUSDIMENSION = 0.08;
 
     /**
      * Constructor para crear una Furgoneta con el país de origen especificado.
