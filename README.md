@@ -64,6 +64,7 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
        numeroPlaza SMALLINT UNSIGNED NOT NULL,
        fechaEntrada TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        fechaSalida TIMESTAMP,
+       precioTotal DECIMAL(4,2),
        FOREIGN KEY (matricula) REFERENCES vehiculo(matricula) ON DELETE CASCADE,
        FOREIGN KEY (numeroPlaza) REFERENCES plaza(numero) ON DELETE CASCADE
    );
