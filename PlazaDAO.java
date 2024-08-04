@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Esta clase gestiona la interacción con la base de datos para la entidad {@link Plaza}.
+ * Esta clase gestiona la interacción con la base de datos para la entidad Plaza.
  * Permite crear, eliminar, actualizar y obtener información de las plazas en la base de datos.
  *
  * @version 1.0
