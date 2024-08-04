@@ -41,6 +41,8 @@ public class GUI_GestionParking extends JFrame {
     private JButton botonHistoricoDeTickets;
     private JComboBox comboBox1;
     private JButton botonMostrarVehiculosActivos;
+    private JTextField MatriculaEntrada;
+    private JButton botonEntrada;
     private WindowManager windowManager;
 
     private Parking parking;
@@ -144,6 +146,13 @@ public class GUI_GestionParking extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarAparcamientosDisponibles();
+            }
+        });
+
+        botonEntrada.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarEntradaVehiculo();
             }
         });
 
@@ -274,7 +283,7 @@ public class GUI_GestionParking extends JFrame {
         try {
             Vehiculo vehiculo = parking.getVehiculoByMatricula(matricula);
             parking.salidaParking(vehiculo);
-            JOptionPane.showMessageDialog(this, "El vehículo con matrícula " + vehiculo.getMATRICULA() + " ha salido del parking");
+            JOptionPane.showMessageDialog(this, "El " + vehiculo.getTIPO().toString() + " con matrícula " + vehiculo.getMATRICULA() + " ha salido del parking");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
         }
@@ -308,7 +317,7 @@ public class GUI_GestionParking extends JFrame {
         try {
             Vehiculo vehiculo = parking.getVehiculoByMatricula(matricula);
             parking.aparcar(numeroDePlaza, vehiculo);
-            JOptionPane.showMessageDialog(this, "El vehículo con matrícula " + vehiculo.getMATRICULA() + " ha aparcado en la plaza " + numeroDePlaza);
+            JOptionPane.showMessageDialog(this, "El " + vehiculo.getTIPO().toString() + " con matrícula " + vehiculo.getMATRICULA() + " ha aparcado en la plaza " + numeroDePlaza);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
@@ -431,6 +440,7 @@ public class GUI_GestionParking extends JFrame {
         ArrayList<Vehiculo> listaVehiculos = parking.getVehiculoDAO().getCountryGroup(pais);
         Collections.sort(listaVehiculos);
         StringBuilder vehiculosTexto = new StringBuilder("Lista de vehículos del país " + pais + ":\n");
+
         for (Vehiculo vehiculo : listaVehiculos) {
             vehiculosTexto.append(vehiculo.toString()).append("\n");
         }
@@ -754,6 +764,27 @@ public class GUI_GestionParking extends JFrame {
 
         ventanaPlazas.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza el JFrame para que ocupe toda la pantalla
         ventanaPlazas.setVisible(true);
+    }
+
+    /**
+     * Registra la entrada de un {@link Vehiculo} en el parking.
+     *
+     * <p>Obtiene la matrícula del vehículo desde el campo de texto {@code MatriculaEntrada},
+     * busca el vehículo mediante {@code getVehiculoByMatricula} y registra su entrada
+     * con {@code entradaParking}.
+     */
+    private void registrarEntradaVehiculo(){
+
+        try {
+            String matricula = MatriculaEntrada.getText();
+            Vehiculo vehiculo = parking.getVehiculoByMatricula(matricula);
+
+            parking.entradaParking(vehiculo);
+
+            JOptionPane.showMessageDialog(this, "El " + vehiculo.getTIPO().toString() + " con matrícula " + vehiculo.getMATRICULA() + " ha entrado en el parking.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }
 
     private void createUIComponents() {

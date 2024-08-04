@@ -214,33 +214,31 @@ public class Parking {
     }
 
     /**
-     * Gestiona la entrada de un objeto {@link Vehiculo} al estacionamiento.
-     * Verifica si el estacionamiento está completo usando el método {@link #isComplete()}.
-     * Si el estacionamiento no está completo, intenta registrar el vehículo en la base de datos
-     * con {@code vehiculoDAO.creaVehiculo(vehiculo)}. Si el registro es exitoso y el vehículo
-     * no está previamente registrado, se agrega a la lista de vehículos registrados. Si el vehículo
-     * ya está registrado, se actualiza su estado a inactivo.
+     * Registra la entrada de un {@link Vehiculo} en el parking.
      *
-     * @param vehiculo El vehículo que intenta ingresar al estacionamiento.
-     * @throws IllegalArgumentException Si el estacionamiento está completo o si el vehículo no se puede registrar.
+     * <p>Este método verifica si el parking tiene espacio disponible y si el vehículo está registrado.
+     * Si el vehículo está registrado y no está activo (dentro del parking), se marca como activo y se actualiza
+     * en la base de datos. Si el vehículo ya está dentro del parking o no está registrado, se lanza una excepción.
+     *
+     * @param vehiculo el vehículo que quiere entrar en el parking
+     * @throws IllegalArgumentException si el parking está completo, si el vehículo ya está en el parking,
+     *         o si el vehículo no está registrado
      */
     public void entradaParking(Vehiculo vehiculo) {
         //Si está completo no permitirá ninguna entrada
         if (!isComplete()) {
-            //Si el vehiculo no está registrado en la base de datos ...
+            //Si el vehiculo ESTÁ REGISTRADO
             if (isRegistrated(vehiculo)) {
-                vehiculoDAO.creaVehiculo(vehiculo);
-                vehiculosRegistrados.add(vehiculo);
-            }
-            //El vehiculo ESTÁ REGISTRADO
-            else {
                 //Si el vehículo NO está dentro del parking ...
                 if (!vehiculo.isActivo()) {
                     vehiculo.setActivo(true);
                     vehiculoDAO.actualizaVehiculo(vehiculo);
-                }
-                else
-                    throw new IllegalArgumentException("El vehículo con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra en el parking.");
+                } else
+                    throw new IllegalArgumentException("El " + vehiculo.getTIPO().toString() + " con matrícula " + vehiculo.getMATRICULA() + " ya se encuentra en el parking.");
+            //Si no se encuentra registrado, lo registra en la lista de vehículos registrados y en la base de datos
+            } else {
+                vehiculosRegistrados.add(vehiculo);
+                vehiculoDAO.creaVehiculo(vehiculo);
             }
 
         } else
@@ -259,9 +257,9 @@ public class Parking {
      * @throws IllegalArgumentException Si el vehículo no está registrado o no se encuentra dentro del parking.
      */
     public void salidaParking(Vehiculo vehiculo) {
-        // Para salir del parking, tiene que estar registrado y ACTIVO
-        if (!isRegistrated(vehiculo)) {
-            //Si se encuentra dentro del parking...
+        // Para salir del parking, tiene que estar REGISTRADO y ACTIVO
+        if (isRegistrated(vehiculo)) {
+
             if (vehiculo.isActivo()) {
                 Plaza plaza = getPlazaByVehiculo(vehiculo);
                 //Si se encuentra aparcado, desaparca y sale
@@ -478,21 +476,6 @@ public class Parking {
     }
 
     /**
-     * Verifica si el vehículo especificado está registrado en la lista de vehículos registrados.
-     * <p>
-     * Utiliza un stream para recorrer la colección de vehículos registrados y verifica si existe
-     * al menos un vehículo en la lista cuya matrícula coincida con la matrícula del vehículo proporcionado.
-     * </p>
-     *
-     * @param vehiculo El vehículo que se desea verificar si está registrado.
-     * @return {@code true} si el vehículo está registrado en la lista, {@code false} en caso contrario.
-     */
-    private boolean estaRegistrado(Vehiculo vehiculo) {
-        return vehiculosRegistrados.stream()
-                .anyMatch(v -> v.getMATRICULA().equalsIgnoreCase(vehiculo.getMATRICULA()));
-    }
-
-    /**
      * Verifica si un vehículo está aparcado en alguna plaza.
      * <p>
      * Obtiene la plaza asociada al vehículo y verifica si no es nula, indicando que el vehículo está aparcado.
@@ -540,21 +523,17 @@ public class Parking {
     }
 
     /**
-     * Verifica si un {@link Vehiculo} está registrado en la lista de vehículos.
+     * Verifica si un {@link Vehiculo} está registrado en el sistema.
      *
-     * Este método compara la matrícula del vehículo proporcionado con las matrículas de
-     * los vehículos en la lista {@code vehiculosRegistrados}. La comparación se realiza
-     * sin distinguir entre mayúsculas y minúsculas.
-     *
-     * @param vehiculo El vehículo cuya matrícula se desea verificar.
-     * @return {@code true} si el vehículo está registrado en la lista, {@code false} en caso contrario.
+     * <p>Este método busca en la lista de vehículos registrados para determinar
+     * si un vehículo con la misma matrícula ya está registrado en la base de datos.
+
+     * @param vehiculo el vehículo a verificar
+     * @return {@code true} si el vehículo está registrado, {@code false} en caso contrario
      */
     public boolean isRegistrated(Vehiculo vehiculo){
-        for(Vehiculo v : vehiculosRegistrados){
-            if (vehiculo.getMATRICULA().equalsIgnoreCase(v.getMATRICULA()))
-                return true;
-        }
-        return false;
+        return vehiculosRegistrados.stream()
+                .anyMatch(v -> v.getMATRICULA().equalsIgnoreCase(vehiculo.getMATRICULA()));
     }
 
     /**
