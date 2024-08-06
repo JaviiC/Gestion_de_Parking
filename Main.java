@@ -29,8 +29,3 @@ public class Main {
     }
 
 }
-/*
-  MEJORAS A IMPLEMENTAR
-
-  - Gestión de entrada al Parking de un Vehículo que está registrado en la Base de Datos y quiere entrar nuevamente al parking.
-*/
