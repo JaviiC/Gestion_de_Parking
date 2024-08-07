@@ -45,7 +45,7 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
     matricula VARCHAR(15) NOT NULL UNIQUE,
     tipo VARCHAR(20) NOT NULL,
     pais VARCHAR(20) NOT NULL,
-    precioEstacionamiento DECIMAL(5,2) NOT NULL,
+    precioEstacionamiento DECIMAL(4,2) NOT NULL,
     activo BOOLEAN NOT NULL,
     PRIMARY KEY (matricula)
    );
