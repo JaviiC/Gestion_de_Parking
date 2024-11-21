@@ -111,8 +111,5 @@ public class Main {
 ¡Las contribuciones son bienvenidas! Si tienes alguna mejora o corrección, por favor abre un "pull request".
 
 # Licencia
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más información.
-
-
 Espero que este programa te sea de gran utilidad y facilite la gestión de tu parking. ¡Gracias por utilizar mi software! 
 J.C
