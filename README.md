@@ -36,6 +36,14 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
 
 ### Configuración de la Base de Datos
 
+Es necesario modificar la ruta de conexión a la base de datos (URL) en la clase <b>GUI_AccesoBBDD.java</b> y su puerto:
+
+```java
+private final String URL = "jdbc:mysql://localhost:3333/parking";
+```
+
+Antes de iniciar la aplicación:
+
 1. Crea una base de datos en MySQL:
    ```sql
    CREATE DATABASE parking CHARACTER SET utf8mb4 COLLATE utf8mb4_es_0900_as_cs;
@@ -69,24 +77,15 @@ Este proyecto implementa un sistema de gestión de parking, proporcionando funci
        FOREIGN KEY (numeroPlaza) REFERENCES plaza(numero) ON DELETE CASCADE
    );
 
-## Ejecución del Proyecto
-1. Clona el repositorio:
-```bash
-git clone https://github.com/tu_usuario/gestion_parking.git
-````
-2. Navega al directorio del proyecto:
-```bash
-cd gestion_parking
-````
-3. Compila y ejecuta la aplicación:
-```bash
-javac -d bin src/GESTION_DE_PARKING/*.java
-java -cp bin GESTION_DE_PARKING.Parking
-````
 # Uso del Programa
-El sistema de gestión de parking ofrece una serie de métodos para interactuar con el sistema y gestionar las operaciones del parking.
+El sistema de Gestión de Parking está diseñado para registrar y controlar la actividad de los vehículos en él. Permite almacenar estos registros en una base de datos, proporcionando un control preciso y detallado sobre las plazas ocupadas y disponibles.
+<p>La aplicación genera de forma predeterminada un <b>Parking</b> de <b>500 plazas</b>, este valor puede ser modificado y adecuarse a las preferencias de creación de cada usuario. En la clase <b>GUI_AccesoBBDD.java</b> puedes modificar el número total de plazas que contendrá el parking:</p> 
 
-## Ejemplo de Uso
+```java
+private final Integer PLAZAS_TOTALES = 500;
+```
+
+## Ejemplo de Uso (main)
 
 ```java
 package APP_GESTION_DE_PARKING;
@@ -111,8 +110,5 @@ public class Main {
 ¡Las contribuciones son bienvenidas! Si tienes alguna mejora o corrección, por favor abre un "pull request".
 
 # Licencia
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más información.
-
-
 Espero que este programa te sea de gran utilidad y facilite la gestión de tu parking. ¡Gracias por utilizar mi software! 
 J.C
