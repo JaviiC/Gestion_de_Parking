@@ -105,6 +105,11 @@ public class Main {
 }
 ``````
 
+## Documentación
+
+Puedes encontrar la documentación del proyecto en el siguiente enlace:
+
+[Ver documentación](src/GESTION_DE_PARKING/docParking/index.html)
 
 # Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes alguna mejora o corrección, por favor abre un "pull request".
