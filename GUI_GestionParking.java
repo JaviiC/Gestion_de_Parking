@@ -732,6 +732,12 @@ public class GUI_GestionParking extends JFrame {
                     }
 
                     panelFila.add(panelPlaza);
+                } else {
+                    // Si no hay más plazas, agregar un espacio vacío
+                    JPanel espacioVacio = new JPanel();
+                    espacioVacio.setPreferredSize(new Dimension(100, 100)); // Mantén el tamaño consistente con el resto
+                    espacioVacio.setOpaque(false); // Hazlo transparente para que no se note
+                    panelFila.add(espacioVacio);
                 }
             }
 
@@ -765,6 +771,7 @@ public class GUI_GestionParking extends JFrame {
         ventanaPlazas.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza el JFrame para que ocupe toda la pantalla
         ventanaPlazas.setVisible(true);
     }
+
 
     /**
      * Registra la entrada de un {@link Vehiculo} en el parking.

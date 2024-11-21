@@ -36,7 +36,7 @@ public class GestionMatriculas {
         patronesPaisesMatricula.put(Paises.Eslovenia, "^[A-HJ-NP-Z]{2} [0-9]{2}-[0-9]{1}[A-HJ-NP-Z]{2}$"); // LJ 13-1JP
         patronesPaisesMatricula.put(Paises.Espana, "^[0-9]{4} [A-HJ-NP-Z]{3}$"); // 2008 HHR
         patronesPaisesMatricula.put(Paises.Estonia, "^[0-9]{3} [A-HJ-NP-Z]{3}$"); // 307 RTB
-        patronesPaisesMatricula.put(Paises.Finlandia, "^[0-9]{4}-[A-HJ-NP-Z]{3}$"); // MMG-418
+        patronesPaisesMatricula.put(Paises.Finlandia, "^[A-HJ-NP-Z]{3}-[0-9]{3}$"); // MMG-418
         patronesPaisesMatricula.put(Paises.Francia, "^[A-HJ-NP-Z]{2}-[0-9]{3}-[A-HJ-NP-Z]{2}$"); // AA-229-AA
         patronesPaisesMatricula.put(Paises.Italia, "^[A-HJ-NP-Z]{2} [0-9]{3}[A-HJ-NP-Z]{2}$"); // CM 844CA
         patronesPaisesMatricula.put(Paises.Luxemburgo, "^[A-HJ-NP-Z]{2} [0-9]{3}$"); // HV 105
