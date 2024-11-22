@@ -107,7 +107,7 @@ public class Main {
 
 ## Documentación
 
-Puedes encontrar la documentación del proyecto descargando la carpeta docParking y ejecutando en tu navegador local el archivo <b>index.hmtl</b>
+Puedes encontrar la documentación del proyecto descargando la carpeta docParking y ejecutando en tu navegador local el archivo <b>index.html</b>
 
 # Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes alguna mejora o corrección, por favor abre un "pull request".
