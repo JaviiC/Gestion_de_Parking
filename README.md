@@ -107,9 +107,7 @@ public class Main {
 
 ## Documentación
 
-Puedes encontrar la documentación del proyecto en el siguiente enlace:
-
-[Ver documentación](src/GESTION_DE_PARKING/index.html)
+Puedes encontrar la documentación del proyecto descargando la carpeta docParking y ejecutando en tu navegador local el archivo <b>index.hmtl</b>
 
 # Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes alguna mejora o corrección, por favor abre un "pull request".
